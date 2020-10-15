@@ -101,7 +101,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-		        <ref bean="searchFilterContentInOriginalBundle"/>
+                #CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -113,6 +113,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
+                #CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#
 		        <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -192,6 +193,7 @@
                         <value>dc.contributor</value>
                         <value>dc.creator</value>
                         <value>dc.subject</value>
+                        #CONFIG_SPRING_API_DISCOVERY_SIMILARITY_METADATA_ADDITIONAL#
                     </list>
                 </property>
                 <!--The minimum number of matching terms across the metadata fields above before an item is found as related -->
@@ -216,7 +218,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-		        <ref bean="searchFilterContentInOriginalBundle"/>
+                #CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -228,6 +230,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
+                #CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#
 		        <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -379,7 +382,7 @@
 			 Default: Tag.NameComparatorAsc  -->
 		<!-- <property name="ordering" value="Tag.NameComparatorAsc"/>-->	
     </bean>
-    
+
     <!--Search filter configuration beans-->
     <bean id="searchFilterTitle" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
         <property name="indexFieldName" value="title"/>
@@ -441,6 +444,8 @@
         <property name="sortOrderFilterPage" value="COUNT"/>
     </bean>
 
+    #CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_DETAILS_ADDITIONAL#
+
     <bean id="searchFilterFileNameInOriginalBundle" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="original_bundle_filenames"/>
         <property name="metadataFields">
@@ -464,5 +469,5 @@
         <property name="metadataField" value="dc.date.issued"/>
         <property name="type" value="date"/>
     </bean>
-    
+
 </beans>
