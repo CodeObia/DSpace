@@ -7,6 +7,9 @@ services:
     volumes:
       - ./postgresData:/var/lib/postgresql/data
     restart: always
+    environment:
+      - POSTGRES_ADMIN_USER=postgres
+      - POSTGRES_ADMIN_PASSWORD=postgres
 # The dspace service will use an existing dspace:latest image, otherwise one
 # will be built from the local context (.). The 'image' command is important
 # because it sets the name of the resulting image to be dspace:latest rather
@@ -24,6 +27,12 @@ services:
       - database
     environment:
       - POSTGRES_DB_HOST=dspace_db
+      - POSTGRES_DB_PORT=5432
+      - POSTGRES_USER=dspace
+      - POSTGRES_PASSWORD=dspace
+      - POSTGRES_SCHEMA=dspace
+      - POSTGRES_ADMIN_USER=postgres
+      - POSTGRES_ADMIN_PASSWORD=postgres
       - ADMIN_EMAIL=moayad@codeobia.com
       - ADMIN_FIRSTNAME=Moayad
       - ADMIN_LASTNAME=Najdawi
