@@ -102,12 +102,12 @@ RUN sed -i -e "s/#CONFIG_DSPACE_BASE_URL#/$CONFIG_DSPACE_BASE_URL/g" \
     && sed -i -e "s/#CONFIG_DSPACE_ACTIVE_THEME#/$CONFIG_DSPACE_ACTIVE_THEME/g" dspace/dspace/config/xmlui.xconf \
     && sed -i -e "s/#CONFIG_DSPACE_NAME#/$CONFIG_DSPACE_NAME/g" dspace/dspace-xmlui/src/main/webapp/i18n/messages.xml \
     && if [ ! -z $CONFIG_GOOGLE_ANALYTICS_KEY ]; \
-        then echo "xmlui.google.analytics.key=$CONFIG_GOOGLE_ANALYTICS_KEY" >> dspace/dspace/config/dspace.cfg; \
+        then echo "xmlui.google.analytics.key=$CONFIG_GOOGLE_ANALYTICS_KEY" >> dspace/local.cfg; \
         else echo "xmlui.google.analytics.key IS NOT DEFINED"; \
     fi \
     && if [ ! -z $REQUEST_ITEM_HELPDESK_OVERRIDE ]; \
-        then echo "request.item.helpdesk.override=$REQUEST_ITEM_HELPDESK_OVERRIDE" >> dspace/dspace/config/dspace.cfg; \
-        else echo "request.item.helpdesk.override=false" >> dspace/dspace/config/dspace.cfg; \
+        then echo "request.item.helpdesk.override=$REQUEST_ITEM_HELPDESK_OVERRIDE" >> dspace/local.cfg; \
+        else echo "request.item.helpdesk.override=false" >> dspace/local.cfg; \
     fi
 
 WORKDIR /tmp/dspace/custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THEME/custom

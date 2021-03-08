@@ -40,17 +40,17 @@ docker exec dspace_db dropdb -U postgres dspace
 echo "$(tput setaf 6)Creating database..."$(tput sgr 0)
 docker exec dspace_db createdb -U postgres -O dspace --encoding=UNICODE dspace
 
+echo "$(tput setaf 6)Creating pgcrypto extension..."$(tput sgr 0)
+docker exec dspace_db psql -U postgres dspace -c 'CREATE EXTENSION pgcrypto;'
+
 echo "$(tput setaf 6)Creating dspace user..."$(tput sgr 0)
-docker exec dspace_db psql -U postgres dspace -c 'alter user dspace createuser;'
+docker exec dspace_db psql -U postgres dspace -c 'alter user dspace superuser;'
 
 echo "$(tput setaf 6)Copying database..."$(tput sgr 0)
 docker cp dspace-$num.dump dspace_db:/
 
 echo "$(tput setaf 6)Importing database..."$(tput sgr 0)
 docker exec dspace_db pg_restore -U postgres -d dspace /dspace-$num.dump
-
-echo "$(tput setaf 6)Removing dspace user..."$(tput sgr 0)
-docker exec dspace_db psql -U postgres dspace -c 'alter user dspace nocreateuser;'
 
 echo "$(tput setaf 6)Vacum database..."$(tput sgr 0)
 docker exec dspace_db vacuumdb -U postgres dspace
@@ -59,6 +59,9 @@ echo "$(tput setaf 6)Updating sequences..."$(tput sgr 0)
 docker cp dspace:/dspace/etc/postgres/update-sequences.sql .
 docker cp update-sequences.sql dspace_db:/
 docker exec dspace_db psql -U dspace -f /update-sequences.sql dspace
+
+echo "$(tput setaf 6)Removing dspace user..."$(tput sgr 0)
+docker exec dspace_db psql -U postgres dspace -c 'alter user dspace nosuperuser;'
 
 echo "$(tput setaf 6)Cleaning up..."$(tput sgr 0)
 docker exec -it dspace_db bash -c "rm dspace-$num.dump"
