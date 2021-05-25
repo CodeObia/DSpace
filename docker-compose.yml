@@ -10,6 +10,7 @@ services:
     environment:
       - POSTGRES_ADMIN_USER=postgres
       - POSTGRES_ADMIN_PASSWORD=postgres
+      - POSTGRES_PASSWORD=postgres
 # The dspace service will use an existing dspace:latest image, otherwise one
 # will be built from the local context (.). The 'image' command is important
 # because it sets the name of the resulting image to be dspace:latest rather
