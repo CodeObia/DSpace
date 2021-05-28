@@ -764,60 +764,59 @@
     <!-- Like the header, the footer contains various miscellaneous text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <footer>
-                <div class="row">
-                    <hr/>
-                    <div class="col-xs-4 col-sm-4">
-                        <div>
-                            <a href="http://www.dspace.org/" target="_blank">DSpace software</a> copyright&#160;&#169;&#160;2002-2015&#160; <a href="http://www.duraspace.org/" target="_blank">DuraSpace</a>
-                        </div>
-                        <div class="hidden-print">
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:value-of
-                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                                    <xsl:text>/contact</xsl:text>
-                                </xsl:attribute>
-                                <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
-                            </a>
-                            <xsl:text> | </xsl:text>
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:value-of
-                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                                    <xsl:text>/feedback</xsl:text>
-                                </xsl:attribute>
-                                <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
-                            </a>
-                        </div>
+            <div class="row">
+                <hr/>
+                <div class="col-xs-4 col-sm-4">
+                    <div>
+                        <a href="http://www.dspace.org/" target="_blank">DSpace software</a> copyright&#160;&#169;&#160;2002-2016&#160; <a href="http://www.duraspace.org/" target="_blank">DuraSpace</a>
                     </div>
-                    <div class="col-xs-5 col-sm-5" style="text-align: justify;">
-                        Disclaimer:<br/>
-                        MELSpace content providers and partners accept no liability to any consequence resulting from use of the content or data made available in this repository. Users of this content assume full responsibility for compliance with all relevant national or international regulations and legislation.
-                    </div>
-                    <div class="col-xs-3 col-sm-3 hidden-print">
-                        <div class="pull-right">
-                            <span class="theme-by">Theme by&#160;</span>
-                            <br/>
-                            <a title="@mire NV" target="_blank" href="https://atmire.com">
-                                <img alt="@mire NV" src="{concat($theme-path, '/images/atmire-logo-small.svg')}"/>
-                            </a>
-                        </div>
-
+                    <div class="hidden-print">
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of
+                                        select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                                <xsl:text>/contact</xsl:text>
+                            </xsl:attribute>
+                            <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
+                        </a>
+                        <xsl:text> | </xsl:text>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of
+                                        select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                                <xsl:text>/feedback</xsl:text>
+                            </xsl:attribute>
+                            <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
+                        </a>
                     </div>
                 </div>
-                <!--Invisible link to HTML sitemap (for search engines) -->
-                <a class="hidden">
-                    <xsl:attribute name="href">
-                        <xsl:value-of
-                                select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                        <xsl:text>/htmlmap</xsl:text>
-                    </xsl:attribute>
-                    <xsl:text>&#160;</xsl:text>
-                </a>
+                <div class="col-xs-5 col-sm-5" style="text-align: justify;">
+                    Disclaimer:<br/>
+                    MELSpace content providers and partners accept no liability to any consequence resulting from use of the content or data made available in this repository. Users of this content assume full responsibility for compliance with all relevant national or international regulations and legislation.
+                </div>
+                <div class="col-xs-3 col-sm-3 hidden-print">
+                    <div class="pull-right">
+                        <span class="theme-by">Theme by&#160;</span>
+                        <br/>
+                        <a title="Atmire NV" target="_blank" href="https://atmire.com">
+                            <img alt="Atmire NV" src="{concat($theme-path, 'images/atmire-logo-small.svg')}"/>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <!--Invisible link to HTML sitemap (for search engines) -->
+            <a class="hidden">
+                <xsl:attribute name="href">
+                    <xsl:value-of
+                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                    <xsl:text>/htmlmap</xsl:text>
+                </xsl:attribute>
+                <xsl:text>&#160;</xsl:text>
+            </a>
             <p>&#160;</p>
         </footer>
     </xsl:template>
-
 
     <!--
             The meta, body, options elements; the three top-level elements in the schema
