@@ -42,7 +42,7 @@ ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 ENV SOLR_SERVER=http://localhost:"$CONFIG_DSPACE_INTERNAL_PROXY_PORT"/solr
 
 # Use ant from a tarball so we don't have to install it from apt with Java 11
-ENV ANT_VERSION 1.10.8
+ENV ANT_VERSION 1.10.11
 ENV ANT_HOME /tmp/ant-$ANT_VERSION
 ENV PATH $ANT_HOME/bin:$PATH
 
