@@ -20,6 +20,6 @@
     "postinstall": "bower install"
   },
   "engines": {
-    "node": ">=6.0.0 <7.0.0"
+    "node": ">=6.0.0 <13.0.0-0"
   }
 }

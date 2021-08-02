@@ -51,9 +51,9 @@ RUN mkdir $ANT_HOME && \
 
 WORKDIR /tmp
 
-# Install build dependencies (use upstream Node.js PPA so we can get v10.x)
+# Install build dependencies (use upstream Node.js PPA so we can get v12.x)
 RUN curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
-    && echo 'deb [arch=amd64] https://deb.nodesource.com/node_10.x bionic main' > /etc/apt/sources.list.d/nodesource.list \
+    && echo 'deb [arch=amd64] https://deb.nodesource.com/node_12.x bionic main' > /etc/apt/sources.list.d/nodesource.list \
     && apt-get update \
     && apt-get install -y \
     nodejs \
