@@ -42,7 +42,7 @@ function statistics_charts() {
             views.push(row.views);
             downloads.push(row.downloads);
         });
-        Highcharts.chart('countries_chart', {
+        Highcharts.chart('countries_chart' + (window.outerWidth > 991 ? '' : '_mobile'), {
             colors: ["#1a4883", "#6ecad1"],
             chart: {
                 type: 'bar'
@@ -99,7 +99,7 @@ function statistics_charts() {
             pointInterval: 'month',
         }];
 
-        Highcharts.chart('last_6_months_chart', {
+        Highcharts.chart('last_6_months_chart' + (window.outerWidth > 991 ? '' : '_mobile'), {
             colors: ["#1a4883", "#6ecad1"],
             title: {
                 useHTML: true,
