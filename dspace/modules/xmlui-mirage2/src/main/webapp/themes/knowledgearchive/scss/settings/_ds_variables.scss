@@ -1,5 +1,4 @@
-// @import url(http://fonts.googleapis.com/earlyaccess/tharlon.css);
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600);
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import "compass-imagehelper";
 //color-pallete
 //-- color:start --//
@@ -31,15 +30,14 @@ $copyright-bg: #303437;
 $copyright-color: #95999C;
 $page-header-border-color: #F4F5F8;
 //font
-$font-openSans: "Open Sans", Arial, sans-serif;
+$font-ptsans: "PT Sans", sans-serif;
 $font-verdana: Verdana, "Geneva", sans-serif;
 $font-georgia: Georgia, Verdana, sans-serif;
-$font-tharlon: "Tharlon", "Helvetica Neue", Helvetica, Arial, sans-serif;
 //heading
 $font-size-body: 12px;
-$font-body: $font-openSans;
-$font-heading1: $font-openSans;
-$font-heading2: $font-openSans;
+$font-body: $font-ptsans;
+$font-heading1: $font-ptsans;
+$font-heading2: $font-ptsans;
 //logo
 $nav-min-height: 60px;
 // $nav-border-top: 16px solid $blue;
