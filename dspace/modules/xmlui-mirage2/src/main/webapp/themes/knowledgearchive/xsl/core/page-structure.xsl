@@ -889,6 +889,8 @@
             <script src="{$theme-path}{@src}">&#160;</script>
         </xsl:for-each>
 
+        <script src="/themes/knowledgearchive/scripts/statistics.js?v=2"></script>
+
         <!-- Add javascipt specified in DRI -->
         <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][not(@qualifier)]">
             <script>
@@ -947,7 +949,8 @@
         <script>
             $(document).ready(function () {
                 jsSocials.setDefaults('twitter', {
-                    hashtags: $('#social_media_share').data('keywords')
+                    hashtags: $('#social_media_share').data('keywords'),
+                    logo: 'fab fa-twitter'
                 });
                 $('#social_media_share').jsSocials({
                     shares: ['email', 'twitter', 'facebook', 'linkedin', 'whatsapp'],
