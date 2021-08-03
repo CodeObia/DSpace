@@ -889,9 +889,6 @@
             <script src="{$theme-path}{@src}">&#160;</script>
         </xsl:for-each>
 
-        <script src="/themes/knowledgearchive/scripts/custom.js"></script>
-        <script src="/themes/knowledgearchive/scripts/statistics.js?v=2"></script>
-
         <!-- Add javascipt specified in DRI -->
         <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][not(@qualifier)]">
             <script>
