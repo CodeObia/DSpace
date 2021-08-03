@@ -273,10 +273,8 @@
             </xsl:for-each>
 
             <link rel="stylesheet" href="{concat($theme-path, 'css/template.css?v=2')}"/>
-            <link rel="stylesheet" href="{concat($theme-path, 'vendor/font-awesome-4.7.0/css/font-awesome.min.css')}"/>
             <link rel="stylesheet" href="{concat($theme-path, 'vendor/jssocials-1.4.0/jssocials.css')}"/>
             <link rel="stylesheet" href="{concat($theme-path, 'vendor/jssocials-1.4.0/jssocials-theme-minima.css')}"/>
-            <link rel="stylesheet" href="{concat($theme-path, 'vendor/academicons-1.8.6/css/academicons.css')}"/>
 
             <!-- Add syndication feeds -->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='feed']">
@@ -344,12 +342,9 @@
             </script>
 
             <xsl:text disable-output-escaping="yes">&lt;!--[if lt IE 9]&gt;
-                &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'vendor/html5shiv/dist/html5shiv.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
-                &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'vendor/respond/dest/respond.min.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
+                &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'scripts/html5shiv.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
+                &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'scripts/respond.min.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
                 &lt;![endif]--&gt;</xsl:text>
-
-            <!-- Modernizr enables HTML5 elements & feature detects -->
-            <script src="{concat($theme-path, 'vendor/modernizr/modernizr.js')}">&#160;</script>
 
             <!-- Add the title in -->
             <xsl:variable name="page_title" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title'][last()]" />
@@ -893,9 +888,6 @@
             <script src="{$theme-path}{@src}">&#160;</script>
         </xsl:for-each>
 
-        <script src="/themes/knowledgearchive/scripts/altmetrics.js"></script>
-        <script src="/themes/knowledgearchive/scripts/custom.js"></script>
-        <script src="/themes/knowledgearchive/scripts/highcharts.js"></script>
         <script src="/themes/knowledgearchive/scripts/statistics.js?v=2"></script>
 
         <!-- Add javascipt specified in DRI -->
@@ -956,7 +948,17 @@
         <script>
             $(document).ready(function () {
                 jsSocials.setDefaults('twitter', {
-                    hashtags: $('#social_media_share').data('keywords')
+                    hashtags: $('#social_media_share').data('keywords'),
+                    logo: 'fab fa-twitter'
+                });
+                jsSocials.setDefaults('facebook', {
+                    logo: 'fab fa-facebook-f'
+                });
+                jsSocials.setDefaults('linkedin', {
+                    logo: 'fab fa-linkedin-in'
+                });
+                jsSocials.setDefaults('whatsapp', {
+                    logo: 'fab fa-whatsapp'
                 });
                 $('#social_media_share').jsSocials({
                     shares: ['email', 'twitter', 'facebook', 'linkedin', 'whatsapp'],
