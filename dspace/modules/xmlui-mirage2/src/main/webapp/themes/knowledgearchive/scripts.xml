@@ -42,7 +42,6 @@
     <script src="scripts/templates.js">&#160;</script>
     <script src="scripts/altmetrics.js">&#160;</script>
     <script src="scripts/custom.js">&#160;</script>
-    <script src="scripts/statistics.js">&#160;</script>
     <script src="node_modules/highcharts/highcharts.js">&#160;</script>
     <script src="scripts/fontawesome.umd.js">&#160;</script>
 
