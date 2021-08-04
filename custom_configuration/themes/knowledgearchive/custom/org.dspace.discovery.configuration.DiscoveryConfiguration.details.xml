@@ -6,7 +6,7 @@
         </list>
     </property>
     <property name="facetLimit" value="10"/>
-    <property name="sortOrder" value="COUNT"/>
+    <property name="sortOrderSidebar" value="COUNT"/>
 </bean>
 
 <bean id="searchFilterRegion" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
@@ -17,7 +17,7 @@
     </list>
 </property>
 <property name="facetLimit" value="10"/>
-<property name="sortOrder" value="COUNT"/>
+<property name="sortOrderSidebar" value="COUNT"/>
 </bean>
 
 <bean id="searchFilterCrp" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
@@ -28,5 +28,5 @@
     </list>
 </property>
 <property name="facetLimit" value="10"/>
-<property name="sortOrder" value="COUNT"/>
+<property name="sortOrderSidebar" value="COUNT"/>
 </bean>
