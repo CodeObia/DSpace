@@ -235,7 +235,7 @@ RUN apt-get update \
 WORKDIR "$DSPACE_HOME"
 
 # Clone DSpace statistics API, set up virtual environment, and install deps
-RUN git clone --branch v1.2.1 https://github.com/ilri/dspace-statistics-api.git \
+RUN git clone --single-branch --branch v6_x https://github.com/mohammadsalem/dspace-statistics-api.git \
     && python3 -m venv "$VIRTUAL_ENV" \
     && . "$VIRTUAL_ENV/bin/activate" \
     && pip install -r "$DSPACE_HOME"/dspace-statistics-api/requirements.txt
