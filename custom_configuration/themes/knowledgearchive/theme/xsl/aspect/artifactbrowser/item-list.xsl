@@ -11,6 +11,12 @@
 <!--
     Rendering of a list of items (e.g. in a search or
     browse results page)
+
+    Author: art.lowel at atmire.com
+    Author: lieven.droogmans at atmire.com
+    Author: ben at atmire.com
+    Author: Alexey Maslov
+
 -->
 
 <xsl:stylesheet
@@ -188,15 +194,27 @@
             <a class="image-link" href="{$href}">
                 <xsl:choose>
                     <xsl:when test="mets:fileGrp[@USE='THUMBNAIL']">
-                        <img class="img-responsive" alt="xmlui.mirage2.item-list.thumbnail" i18n:attr="alt">
+                        <!-- Checking if Thumbnail is restricted and if so, show a restricted image -->
+                        <xsl:variable name="src">
+                            <xsl:value-of select="mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                        </xsl:variable>
+                        <xsl:choose>
+                            <xsl:when test="contains($src,'isAllowed=n')">
+                                <div style="width: 100%; text-align: center">
+                                    <i aria-hidden="true" class="glyphicon  glyphicon-lock"></i>
+                                </div>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <img class="img-responsive img-thumbnail" alt="xmlui.mirage2.item-list.thumbnail" i18n:attr="alt">
                             <xsl:attribute name="src">
-                                <xsl:value-of
-                                        select="mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                                        <xsl:value-of select="$src"/>
                             </xsl:attribute>
                         </img>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:when>
                     <xsl:otherwise>
-                        <img alt="xmlui.mirage2.item-list.thumbnail" i18n:attr="alt">
+                        <img class="img-thumbnail" alt="xmlui.mirage2.item-list.thumbnail" i18n:attr="alt">
                             <xsl:attribute name="data-src">
                                 <xsl:text>holder.js/100%x</xsl:text>
                                 <xsl:value-of select="$thumbnail.maxheight"/>
@@ -215,6 +233,12 @@
     <!--
         Rendering of a list of items (e.g. in a search or
         browse results page)
+
+        Author: art.lowel at atmire.com
+        Author: lieven.droogmans at atmire.com
+        Author: ben at atmire.com
+        Author: Alexey Maslov
+
     -->
 
 
