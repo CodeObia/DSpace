@@ -856,17 +856,17 @@
                             <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                         </xsl:attribute>
                         <xsl:choose>
-                            <xsl:when test="$context/mets:fileSec/mets:fileGrp[@USE='ORIGINAL']/
+                            <xsl:when test="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/
                         mets:file[@GROUPID=current()/@GROUPID]">
-                                <img alt="Thumbnail">
+                                <img class="img-thumbnail" alt="Thumbnail">
                                     <xsl:attribute name="src">
-                                        <xsl:value-of select="$context/mets:fileSec/mets:fileGrp[@USE='ORIGINAL']/
+                                        <xsl:value-of select="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/
                                     mets:file[@GROUPID=current()/@GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                                     </xsl:attribute>
                                 </img>
                             </xsl:when>
                             <xsl:otherwise>
-                                <img alt="Thumbnail">
+                                <img class="img-thumbnail" alt="Thumbnail">
                                     <xsl:attribute name="data-src">
                                         <xsl:text>holder.js/100%x</xsl:text>
                                         <xsl:value-of select="$thumbnail.maxheight"/>
