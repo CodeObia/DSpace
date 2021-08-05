@@ -78,7 +78,8 @@ header .navbar {
   border-bottom: solid 2px #6ecad1;
   padding: 14px 10px;
   font-size: 16px;
-  margin: 0
+  margin: 0;
+  font-weight: 500;
 }
 #sidebar a.list-group-item.active {
   border-bottom: solid 2px #6ecad1;
@@ -100,7 +101,8 @@ header .navbar {
   margin-left: -5px
 }
 #sidebar a.list-group-item.active .h5 {
-  font-size: 15px
+  font-size: 15px;
+  font-weight: 500;
 }
 body {
   font-size: 14px
@@ -338,4 +340,8 @@ select:not([multiple]) {
 #aspect_artifactbrowser_ItemViewer_div_item-view .item-page-field-wrapper h5
 {
     margin-bottom: 8.5px;
+}
+
+.ds-static-div a {
+  font-weight: 500;
 }
