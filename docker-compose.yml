@@ -38,6 +38,8 @@ services:
       - ADMIN_FIRSTNAME=Moayad
       - ADMIN_LASTNAME=Najdawi
       - ADMIN_PASSWD=ADMIN_PASSWD
+      - JAVA_OPTS=-Xmx1024m -Dfile.encoding=UTF-8
+      - CATALINA_OPTS=-Xmx1024M -Xms1024M -Dfile.encoding=UTF-8
     restart: always
     volumes:
 #      - ./solrData:/dspace/solr
