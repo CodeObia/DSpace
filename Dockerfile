@@ -176,7 +176,7 @@ RUN apt-get -y remove \
     && rm -rf "$DSPACE_HOME/.m2" /tmp/*
 
 
-FROM tomcat:8.5-jdk8
+FROM tomcat:8.5-jdk8-openjdk
 # Set some variables for the Tomcat container. Some were already set above in
 # the build container, but they don't get propagated in multi-stage builds.
 ENV DSPACE_HOME=/dspace \
