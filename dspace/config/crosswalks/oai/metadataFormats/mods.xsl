@@ -28,6 +28,28 @@
 					<mods:creator><xsl:value-of select="." /></mods:creator>
 				</mods:name>
 			</xsl:for-each>
+			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='creator']/doc:element/doc:field[@name='value']">
+				<mods:name>
+					<mods:creator type="contact"><xsl:value-of select="." /></mods:creator>
+				</mods:name>
+			</xsl:for-each>
+			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='contributor']/doc:element/doc:element/doc:field[@name='value']">
+				<mods:name>
+					<mods:contributor>
+						<xsl:attribute name="type">
+							<xsl:value-of select="../../@name"/>
+						</xsl:attribute>
+						<xsl:value-of select="."/>
+					</mods:contributor>
+				</mods:name>
+			</xsl:for-each>
+			<xsl:if test="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
+				<mods:originInfo>
+					<mods:dateOther encoding="iso8601">
+						<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+					</mods:dateOther>
+				</mods:originInfo>
+			</xsl:if>
 			<xsl:if test="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='accessioned']/doc:element/doc:field[@name='value']">
 			<mods:extension>
 				<mods:dateAvailable encoding="iso8601">
@@ -85,6 +107,13 @@
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='rights']/doc:element/doc:field[@name='value']">
 			<mods:accessCondition type="useAndReproduction"><xsl:value-of select="." /></mods:accessCondition>
 			</xsl:for-each>
+			<xsl:if test="doc:metadata/doc:element[@name='cg']/doc:element[@name='date']/doc:element[@name='embargo-end-date']/doc:element/doc:field[@name='value']">
+				<mods:extension>
+					<mods:embargoEndDate encoding="iso8601">
+						<xsl:value-of select="doc:metadata/doc:element[@name='cg']/doc:element[@name='date']/doc:element[@name='embargo-end-date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+					</mods:embargoEndDate>
+				</mods:extension>
+			</xsl:if>
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='subject']/doc:element/doc:field[@name='value']">
 			<mods:subject>
 				<mods:topic><xsl:value-of select="." /></mods:topic>
@@ -103,8 +132,13 @@
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='type']/doc:element/doc:field[@name='value']">
 			<mods:genre><xsl:value-of select="." /></mods:genre>
 			</xsl:for-each>
-			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element[@name='country']/doc:element/doc:field[@name='value']">
-				<mods:location><xsl:value-of select="." /></mods:location>
+			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element/doc:element/doc:field[@name='value']">
+				<mods:coverage>
+					<xsl:attribute name="type">
+						<xsl:value-of select="../../@name" />
+					</xsl:attribute>
+					<xsl:value-of select="." />
+				</mods:coverage>
 			</xsl:for-each>
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='format']/doc:element/doc:field[@name='value']">
 				<mods:physicalDescription>
