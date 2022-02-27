@@ -28,7 +28,7 @@
 					<mods:creator><xsl:value-of select="." /></mods:creator>
 				</mods:name>
 			</xsl:for-each>
-			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='creator']/doc:element/doc:field[@name='value']">
+			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='contact']/doc:element/doc:field[@name='value']">
 				<mods:name>
 					<mods:creator type="contact"><xsl:value-of select="." /></mods:creator>
 				</mods:name>
@@ -121,7 +121,7 @@
 			</xsl:for-each>
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='subject']/doc:element[@name='agrovoc']/doc:element/doc:field[@name='value']">
 				<mods:subject>
-					<mods:topic><xsl:value-of select="." /></mods:topic>
+					<mods:topic type="agrovoc"><xsl:value-of select="." /></mods:topic>
 				</mods:subject>
 			</xsl:for-each>
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='title']/doc:element/doc:field[@name='value']">
