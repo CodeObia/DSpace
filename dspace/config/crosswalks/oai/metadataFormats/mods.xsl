@@ -17,245 +17,293 @@
 	<xsl:output omit-xml-declaration="yes" method="xml" indent="yes" />
 
 	<xsl:template match="/">
-		<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-1.xsd">
-			<!-- <mods:titleInfo><mods:title> dc.title </mods:title></mods:titleInfo> -->
+		<mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+			<!-- <titleInfo><title> dc.title </title></titleInfo> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='title']/doc:element/doc:field[@name='value']">
-				<mods:titleInfo>
-					<mods:title><xsl:value-of select="." /></mods:title>
-				</mods:titleInfo>
+				<titleInfo>
+					<title><xsl:value-of select="." /></title>
+				</titleInfo>
 			</xsl:for-each>
 
-			<!-- <mods:name type="personal"><mods:role><roleTerm type="text" authroity="marcrelator">creator</roleTerm><roleTerm type="code" authority="marcrelator">cre</roleTerm></mods:role><mods:namePart> dc.creator </mods:namePart><mods:role><roleTerm valueURI="ORCID"/></mods:role></mods:name> -->
+			<!-- <name type="personal"><role><roleTerm type="text" authority="marcrelator">creator</roleTerm><roleTerm type="code" authority="marcrelator">cre</roleTerm></role><namePart> dc.creator </namePart><role><roleTerm valueURI="ORCID"/></role></name> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='creator']/doc:element/doc:field[@name='value']">
-				<mods:name type="personal">
+				<name type="personal">
 					<role>
-						<roleTerm type="text" authroity="marcrelator">creator</roleTerm>
+						<roleTerm type="text" authority="marcrelator">creator</roleTerm>
 						<roleTerm type="code" authority="marcrelator">cre</roleTerm>
 					</role>
 					<xsl:variable name="creator_name"><xsl:value-of select="."/></xsl:variable>
-					<mods:namePart><xsl:value-of select="$creator_name"/></mods:namePart>
+					<namePart><xsl:value-of select="$creator_name"/></namePart>
 
 					<xsl:for-each select="/doc:metadata/doc:element[@name='cg']/doc:element[@name='creator']/doc:element[@name='id']/doc:element/doc:field[@name='value']">
 						<xsl:variable name="creatorId" select="."/>
 						<xsl:analyze-string select="normalize-space($creatorId)" regex="^(.*):\s(\d{{4}}-\d{{4}}-\d{{4}}-\d{{4}})$">
 							<xsl:matching-substring>
 								<xsl:if test="$creator_name = regex-group(1)">
-									<xsl:variable name="orcid" select="regex-group(2)"/>
-									<role>
-										<roleTerm>
-											<xsl:attribute name="valueURI">
-												<xsl:value-of select="$orcid"/>
-											</xsl:attribute>
-										</roleTerm>
-									</role>
+									<nameIdentifier type="ORCID">https://orcid.org/<xsl:value-of select="regex-group(2)"/></nameIdentifier>
 								</xsl:if>
 							</xsl:matching-substring>
 						</xsl:analyze-string>
 					</xsl:for-each>
-				</mods:name>
+				</name>
 			</xsl:for-each>
 
-			<!-- <mods:name type="personal"><mods:role><roleTerm type="text" authority="marcrelator">author</roleTerm><roleTerm type="code" authority="marcrelator">aut</roleTerm></mods:role><mods:namePart> dc.contributor </mods:namePart><mods:role><roleTerm valueURI="ORCID"/></mods:role></mods:name> -->
+			<!-- <name type="personal"><role><roleTerm type="text" authority="marcrelator">author</roleTerm><roleTerm type="code" authority="marcrelator">aut</roleTerm></role><namePart> dc.contributor </namePart><role><roleTerm valueURI="ORCID"/></role></name> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='contributor']/doc:element/doc:field[@name='value']">
-				<mods:name type="personal">
+				<name type="personal">
 					<role>
-						<roleTerm type="text" authroity="marcrelator">author</roleTerm>
+						<roleTerm type="text" authority="marcrelator">author</roleTerm>
 						<roleTerm type="code" authority="marcrelator">aut</roleTerm>
 					</role>
 					<xsl:variable name="author_name"><xsl:value-of select="."/></xsl:variable>
-					<mods:namePart><xsl:value-of select="$author_name"/></mods:namePart>
+					<namePart><xsl:value-of select="$author_name"/></namePart>
 
 					<xsl:for-each select="/doc:metadata/doc:element[@name='cg']/doc:element[@name='creator']/doc:element[@name='id']/doc:element/doc:field[@name='value']">
 						<xsl:variable name="creatorId" select="."/>
 						<xsl:analyze-string select="normalize-space($creatorId)" regex="^(.*):\s(\d{{4}}-\d{{4}}-\d{{4}}-\d{{4}})$">
 							<xsl:matching-substring>
 								<xsl:if test="$author_name = regex-group(1)">
-									<xsl:variable name="orcid" select="regex-group(2)"/>
-									<role>
-										<roleTerm>
-											<xsl:attribute name="valueURI">
-												https://orcid.org/<xsl:value-of select="$orcid"/>
-											</xsl:attribute>
-										</roleTerm>
-									</role>
+									<nameIdentifier type="ORCID">https://orcid.org/<xsl:value-of select="regex-group(2)"/></nameIdentifier>
 								</xsl:if>
 							</xsl:matching-substring>
 						</xsl:analyze-string>
 					</xsl:for-each>
-				</mods:name>
+				</name>
 			</xsl:for-each>
 
-			<!-- <mods:name type="personal"><mods:role><roleTerm type="text" authority="marcrelator">Metadata contact</roleTerm><roleTerm type="code" authority="marcrelator">mdc</roleTerm></mods:role><mods:namePart> cg.contact </mods:namePart></mods:name> -->
+			<!-- <name type="personal"><role><roleTerm type="text" authority="marcrelator">Metadata contact</roleTerm><roleTerm type="code" authority="marcrelator">mdc</roleTerm></role><namePart> cg.contact </namePart></name> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='contact']/doc:element/doc:field[@name='value']">
-				<mods:name type="personal">
+				<name type="personal">
 					<role>
 						<roleTerm type="text" authority="marcrelator">Metadata contact</roleTerm>
 						<roleTerm type="code" authority="marcrelator">mdc</roleTerm>
 					</role>
-					<mods:namePart><xsl:value-of select="."/></mods:namePart>
-				</mods:name>
+					<namePart><xsl:value-of select="."/></namePart>
+				</name>
 			</xsl:for-each>
 
-			<!-- <mods:name type="corporate"><mods:role><mods:roleTerm type="text"> * </mods:roleTerm></mods:role><mods:affiliation> cg.contributor.* </mods:affiliation></mods:name> -->
+			<!-- <name type="corporate"><role><roleTerm type="text"> * </roleTerm></role><affiliation> cg.contributor.* </affiliation></name> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='contributor']/doc:element/doc:element/doc:field[@name='value']">
 				<xsl:variable name="contributor_type"><xsl:value-of select="../../@name"/></xsl:variable>
 				<xsl:if test="not($contributor_type = 'project')">
-					<mods:name type="corporate">
-						<mods:role>
-							<mods:roleTerm type="text"><xsl:value-of select="$contributor_type"/></mods:roleTerm>
-						</mods:role>
+					<name type="corporate">
+						<role>
+							<roleTerm type="text"><xsl:value-of select="$contributor_type"/></roleTerm>
+						</role>
 						<affiliation><xsl:value-of select="."/></affiliation>
-					</mods:name>
+					</name>
 				</xsl:if>
 			</xsl:for-each>
 
-			<!-- <mods:subject><mods:topic> cg.subject.agrovoc </mods:topic></mods:subject> -->
+			<!-- <subject><topic> cg.subject.agrovoc </topic></subject> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='subject']/doc:element[@name='agrovoc']/doc:element/doc:field[@name='value']">
-				<mods:subject>
-					<mods:topic><xsl:value-of select="." /></mods:topic>
-				</mods:subject>
+				<subject>
+					<topic><xsl:value-of select="." /></topic>
+				</subject>
 			</xsl:for-each>
 
-			<!-- <mods:subject><mods:topic> dc.subject </mods:topic></mods:subject> -->
+			<!-- <subject><topic> dc.subject </topic></subject> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='subject']/doc:element/doc:field[@name='value']">
-				<mods:subject>
-					<mods:topic><xsl:value-of select="." /></mods:topic>
-				</mods:subject>
+				<subject>
+					<topic><xsl:value-of select="." /></topic>
+				</subject>
 			</xsl:for-each>
 
-			<!-- <mods:abstract> dc.description.abstract </mods:abstract> -->
+			<!-- <abstract> dc.description.abstract </abstract> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='description']/doc:element[@name='abstract']/doc:element/doc:field[@name='value']">
-				<mods:abstract><xsl:value-of select="." /></mods:abstract>
+				<abstract><xsl:value-of select="." /></abstract>
 			</xsl:for-each>
 
-			<!-- <mods:originInfo eventType="publisher"><mods:publisher> dc.publisher </mods:publisher></mods:originInfo> -->
+			<!-- <originInfo eventType="publisher"><publisher> dc.publisher </publisher></originInfo> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='publisher']/doc:element/doc:field[@name='value']">
-				<mods:originInfo eventType="publisher">
-					<mods:publisher><xsl:value-of select="." /></mods:publisher>
-					<!-- <mods:dateIssued encoding="iso8601"> dc.date.issued </mods:dateIssued> -->
+				<originInfo eventType="publisher">
+					<publisher><xsl:value-of select="." /></publisher>
+					<!-- <dateIssued encoding="iso8601"> dc.date.issued </dateIssued> -->
 					<xsl:if test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
-						<mods:dateIssued encoding="iso8601">
+						<dateIssued encoding="iso8601">
 							<xsl:value-of select="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
-						</mods:dateIssued>
+						</dateIssued>
 					</xsl:if>
-				</mods:originInfo>
+				</originInfo>
 			</xsl:for-each>
 
-			<!-- <mods:originInfo eventType="publication"><mods:dateIssued encoding="iso8601"> dc.date.issued </mods:dateIssued></mods:originInfo> -->
+			<!-- <originInfo eventType="publication"><dateIssued encoding="iso8601"> dc.date.issued </dateIssued></originInfo> -->
 			<xsl:if test="not(doc:metadata/doc:element[@name='dc']/doc:element[@name='publisher']/doc:element/doc:field[@name='value'])">
 				<xsl:if test="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
-					<mods:originInfo eventType="publication">
-						<mods:dateIssued encoding="iso8601">
+					<originInfo eventType="publication">
+						<dateIssued encoding="iso8601">
 							<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
-						</mods:dateIssued>
-					</mods:originInfo>
+						</dateIssued>
+					</originInfo>
 				</xsl:if>
 			</xsl:if>
 
-			<!-- <mods:genre> dc.type </mods:genre> -->
+			<!-- <genre> dc.type </genre> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='type']/doc:element/doc:field[@name='value']">
-				<mods:genre><xsl:value-of select="." /></mods:genre>
+				<genre><xsl:value-of select="." /></genre>
 			</xsl:for-each>
 
-			<!-- <mods:physicalDescription><mods:form> dc.format </mods:form></mods:physicalDescription> -->
+			<!-- <physicalDescription><form> dc.format </form></physicalDescription> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='format']/doc:element/doc:field[@name='value']">
-				<mods:physicalDescription>
-					<mods:form><xsl:value-of select="." /></mods:form>
-				</mods:physicalDescription>
+				<physicalDescription>
+					<form><xsl:value-of select="." /></form>
+				</physicalDescription>
 			</xsl:for-each>
 
-			<!-- <mods:note type="citation"><mods:form> dc.identifier.citation </mods:note> -->
+			<!-- <note type="citation"><form> dc.identifier.citation </note> -->
 			<xsl:if test="doc:metadata/doc:element[@name='dc']/doc:element[@name='identifier']/doc:element[@name='citation']/doc:element/doc:field[@name='value']">
-				<mods:note type="citation">
+				<note type="citation">
 					<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='identifier']/doc:element[@name='citation']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
-				</mods:note>
+				</note>
 			</xsl:if>
 
-			<!-- <mods:identifier type="*"> dc.identifier.* </mods:identifier> -->
+			<!-- <identifier type="*"> dc.identifier.* </identifier> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='identifier']/doc:element/doc:element/doc:field[@name='value']">
 				<xsl:variable name="identifier_type"><xsl:value-of select="../../@name"/></xsl:variable>
 				<xsl:if test="(($identifier_type != 'citation') and ($identifier_type != 'status'))">
-					<mods:identifier>
+					<identifier>
 						<xsl:attribute name="type"><xsl:value-of select="$identifier_type"/></xsl:attribute>
 						<xsl:value-of select="."/>
-					</mods:identifier>
+					</identifier>
 				</xsl:if>
 			</xsl:for-each>
 
-			<!-- <mods:identifier type="doi"> cg.identifier.doi </mods:identifier> -->
+			<!-- <identifier type="doi"> cg.identifier.doi </identifier> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='identifier']/doc:element[@name='doi']/doc:element/doc:field[@name='value']">
-				<mods:identifier>
+				<identifier>
 					<xsl:attribute name="type">
 						<xsl:value-of select="../../@name" />
 					</xsl:attribute>
 					<xsl:value-of select="." />
-				</mods:identifier>
+				</identifier>
 			</xsl:for-each>
 
-			<!-- <mods:relatedItem><titleInfo><title> dc.source </title></titleInfo></mods:relatedItem> -->
-			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='source']/doc:element/doc:field[@name='value']">
-				<mods:relatedItem>
-					<mods:titleInfo>
-						<mods:title><xsl:value-of select="." /></mods:title>
-					</mods:titleInfo>
-				</mods:relatedItem>
+			<!-- <identifier type="issn"> cg.issn </identifier> -->
+			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='issn']/doc:element/doc:field[@name='value']">
+				<identifier type="issn">
+					<xsl:value-of select="." />
+				</identifier>
 			</xsl:for-each>
 
-			<!-- <mods:language><mods:languageTerm type="code" authority="iso639-1"> dc.language </mods:languageTerm></mods:language> -->
+			<!-- <identifier type="isbn"> cg.isbn </isbn> -->
+			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='isbn']/doc:element/doc:field[@name='value']">
+				<identifier type="isbn">
+					<xsl:value-of select="." />
+				</identifier>
+			</xsl:for-each>
+
+			<!-- <relatedItem><titleInfo><title> cg.journal </title></titleInfo><part><detail type="issue"> cg.issue </detail></part><part><detail type="volume"> cg.volume </detail></part><part><extent unit="pages"> dcterms.extent </extent></part><part><date> mel.date.year </date></part></relatedItem> -->
+			<xsl:if test="doc:metadata/doc:element[@name='cg']/doc:element[@name='journal']/doc:element/doc:field[@name='value']">
+				<relatedItem>
+					<titleInfo>
+						<title>
+							<xsl:value-of select="doc:metadata/doc:element[@name='cg']/doc:element[@name='journal']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+						</title>
+					</titleInfo>
+					<xsl:if test="doc:metadata/doc:element[@name='cg']/doc:element[@name='issue']/doc:element/doc:field[@name='value']">
+						<part>
+							<detail type="issue">
+								<number>
+									<xsl:value-of select="doc:metadata/doc:element[@name='cg']/doc:element[@name='issue']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+								</number>
+							</detail>
+						</part>
+					</xsl:if>
+					<xsl:if test="doc:metadata/doc:element[@name='cg']/doc:element[@name='volume']/doc:element/doc:field[@name='value']">
+						<part>
+							<detail type="volume">
+								<number>
+									<xsl:value-of select="doc:metadata/doc:element[@name='cg']/doc:element[@name='volume']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+								</number>
+							</detail>
+						</part>
+					</xsl:if>
+					<xsl:if test="doc:metadata/doc:element[@name='dcterms']/doc:element[@name='extent']/doc:element/doc:field[@name='value']">
+						<part>
+							<extent unit="pages">
+								<xsl:variable name="pages" select="doc:metadata/doc:element[@name='dcterms']/doc:element[@name='extent']/doc:element/doc:field[@name='value']/text()"/>
+								<xsl:analyze-string select="normalize-space($pages)" regex="^(.*)-(.*)$">
+									<xsl:matching-substring>
+										<xsl:if test="regex-group(1)">
+											<start>
+												<xsl:value-of select="regex-group(1)"/>
+											</start>
+										</xsl:if>
+										<xsl:if test="regex-group(2)">
+											<end>
+												<xsl:value-of select="regex-group(2)"/>
+											</end>
+										</xsl:if>
+									</xsl:matching-substring>
+								</xsl:analyze-string>
+							</extent>
+						</part>
+					</xsl:if>
+					<xsl:if test="doc:metadata/doc:element[@name='mel']/doc:element[@name='date']/doc:element[@name='year']/doc:element/doc:field[@name='value']">
+						<part>
+							<date>
+								<xsl:value-of select="doc:metadata/doc:element[@name='mel']/doc:element[@name='date']/doc:element[@name='year']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</date>
+						</part>
+					</xsl:if>
+				</relatedItem>
+			</xsl:if>
+
+			<!-- <language><languageTerm type="code" authority="iso639-3"> dc.language </languageTerm></language> -->
             <xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='language']/doc:element/doc:field[@name='value']">
 				<language>
-					<languageTerm type="code" authority="iso639-1"><xsl:value-of select="." /></languageTerm>
+					<languageTerm type="code" authority="iso639-3"><xsl:value-of select="." /></languageTerm>
 				</language>
 			</xsl:for-each>
 
-			<!-- <mods:subject><mods:hierarchicalGeographic><mods:region> cg.coverage.region </mods:region></mods:hierarchicalGeographic></mods:subject> -->
+			<!-- <subject><hierarchicalGeographic><region> cg.coverage.region </region></hierarchicalGeographic></subject> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element[@name='region']/doc:element/doc:field[@name='value']">
-				<mods:subject>
-					<mods:hierarchicalGeographic>
-						<mods:region><xsl:value-of select="." /></mods:region>
-					</mods:hierarchicalGeographic>
-				</mods:subject>
+				<subject>
+					<hierarchicalGeographic>
+						<region><xsl:value-of select="." /></region>
+					</hierarchicalGeographic>
+				</subject>
 			</xsl:for-each>
 
-			<!-- <mods:subject><mods:hierarchicalGeographic><mods:country> cg.coverage.country </mods:country></mods:hierarchicalGeographic></mods:subject> -->
+			<!-- <subject><hierarchicalGeographic><country> cg.coverage.country </country></hierarchicalGeographic></subject> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element[@name='country']/doc:element/doc:field[@name='value']">
-				<mods:subject>
-					<mods:hierarchicalGeographic>
-						<mods:country><xsl:value-of select="." /></mods:country>
-					</mods:hierarchicalGeographic>
-				</mods:subject>
+				<subject>
+					<hierarchicalGeographic>
+						<country><xsl:value-of select="." /></country>
+					</hierarchicalGeographic>
+				</subject>
 			</xsl:for-each>
 
-			<!-- <mods:subject><mods:hierarchicalGeographic><mods:area areaType="administrativeUnit"> cg.coverage.admin-unit </mods:area></mods:hierarchicalGeographic></mods:subject> -->
+			<!-- <subject><hierarchicalGeographic><area areaType="administrativeUnit"> cg.coverage.admin-unit </area></hierarchicalGeographic></subject> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element[@name='admin-unit']/doc:element/doc:field[@name='value']">
-				<mods:subject>
-					<mods:hierarchicalGeographic>
-						<mods:area areaType="administrative unit"><xsl:value-of select="." /></mods:area>
-					</mods:hierarchicalGeographic>
-				</mods:subject>
+				<subject>
+					<hierarchicalGeographic>
+						<area areaType="administrative unit"><xsl:value-of select="." /></area>
+					</hierarchicalGeographic>
+				</subject>
 			</xsl:for-each>
 
-			<!-- <mods:subject><mods:temporal encoding="iso8601" point="start"> cg.coverage.start-date </mods:temporal></mods:subject> -->
+			<!-- <subject><temporal encoding="iso8601" point="start"> cg.coverage.start-date </temporal></subject> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element[@name='start-date']/doc:element/doc:field[@name='value']">
-				<mods:subject>
-					<mods:temporal encoding="iso8601" point="start"><xsl:value-of select="." /></mods:temporal>
-				</mods:subject>
+				<subject>
+					<temporal encoding="iso8601" point="start"><xsl:value-of select="." /></temporal>
+				</subject>
 			</xsl:for-each>
 
-			<!-- <mods:subject><mods:temporal encoding="iso8601" point="end"> cg.coverage.end-date </mods:temporal></mods:subject> -->
+			<!-- <subject><temporal encoding="iso8601" point="end"> cg.coverage.end-date </temporal></subject> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element[@name='end-date']/doc:element/doc:field[@name='value']">
-				<mods:subject>
-					<mods:temporal encoding="iso8601" point="end"><xsl:value-of select="." /></mods:temporal>
-				</mods:subject>
+				<subject>
+					<temporal encoding="iso8601" point="end"><xsl:value-of select="." /></temporal>
+				</subject>
 			</xsl:for-each>
 
-			<!-- <mods:subject><mods:cartographics><mods:coordinates> cg.coverage.geolocation </mods:coordinates></mods:cartographics></mods:subject> -->
+			<!-- <subject><cartographics><coordinates> cg.coverage.geolocation </coordinates></cartographics></subject> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element[@name='geolocation']/doc:element/doc:field[@name='value']">
-				<mods:subject>
-					<mods:cartographics>
-						<mods:coordinates><xsl:value-of select="." /></mods:coordinates>
-					</mods:cartographics>
-				</mods:subject>
+				<subject>
+					<cartographics>
+						<coordinates><xsl:value-of select="." /></coordinates>
+					</cartographics>
+				</subject>
 			</xsl:for-each>
 
 			<!-- <accessCondition type="restriction on access" displayLabel="Access Status"> dc.identifier.status </accessCondition> -->
@@ -274,11 +322,11 @@
 				</accessCondition>
 			</xsl:if>
 
-			<!-- <mods:accessCondition type="useAndReproduction"> dc.rights </mods:accessCondition> -->
+			<!-- <accessCondition type="useAndReproduction"> dc.rights </accessCondition> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='rights']/doc:element/doc:field[@name='value']">
-				<mods:accessCondition type="use and reproduction"><xsl:value-of select="." /></mods:accessCondition>
+				<accessCondition type="use and reproduction"><xsl:value-of select="." /></accessCondition>
 			</xsl:for-each>
-		</mods:mods>
+		</mods>
 	</xsl:template>
 </xsl:stylesheet>
 
