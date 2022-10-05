@@ -22,7 +22,7 @@ JAVA_OPTS="-Xmx512M -Xms512M -Dfile.encoding=UTF-8"
 
 # Regenerate DSpace Sitemaps every 8 hours (12AM, 8AM, 4PM).
 # SiteMaps ensure that your content is more findable in Google, Google Scholar, and other major search engines.
-0 0,8,16 * * * dspace $DSPACE/bin/dspace generate-sitemaps >> $DSPACE/log/cron_logs.log 2>&1
+0 6,14,22 * * * dspace $DSPACE/bin/dspace generate-sitemaps >> $DSPACE/log/cron_logs.log 2>&1
 
 #----------------
 # DAILY TASKS
@@ -32,11 +32,11 @@ JAVA_OPTS="-Xmx512M -Xms512M -Dfile.encoding=UTF-8"
 # Update the OAI-PMH index with the newest content (and re-optimize that index) at midnight every day
 # NOTE: ONLY NECESSARY IF YOU ARE RUNNING OAI-PMH
 # (This ensures new content is available via OAI-PMH and ensures the OAI-PMH index is optimized for better performance)
-0 0 * * * dspace $DSPACE/bin/dspace oai import -o >> $DSPACE/log/cron_logs.log 2>&1
+30 22 * * * dspace $DSPACE/bin/dspace oai import -o >> $DSPACE/log/cron_logs.log 2>&1
 
 # Clean and Update the Discovery indexes at midnight every day
 # (This ensures that any deleted documents are cleaned from the Discovery search/browse index)
-0 0 * * * dspace $DSPACE/bin/dspace index-discovery >> $DSPACE/log/cron_logs.log 2>&1
+0 23 * * * dspace $DSPACE/bin/dspace index-discovery >> $DSPACE/log/cron_logs.log 2>&1
 
 # DEPRECATED
 ## Re-Optimize the Discovery indexes at 12:30 every day
@@ -44,7 +44,7 @@ JAVA_OPTS="-Xmx512M -Xms512M -Dfile.encoding=UTF-8"
 #30 0 * * * dspace $DSPACE/bin/dspace index-discovery -o >> $DSPACE/log/cron_logs.log 2>&1
 
 # run the index-authority script once a day at 12:45 to ensure the Solr Authority cache is up to date
-45 0 * * * dspace $DSPACE/bin/dspace index-authority >> $DSPACE/log/cron_logs.log 2>&1
+45 23 * * * dspace $DSPACE/bin/dspace index-authority >> $DSPACE/log/cron_logs.log 2>&1
 
 # Cleanup Web Spiders from DSpace Statistics Solr Index at 01:00 every day
 # NOTE: ONLY NECESSARY IF YOU ARE RUNNING SOLR STATISTICS
@@ -94,7 +94,7 @@ JAVA_OPTS="-Xmx512M -Xms512M -Dfile.encoding=UTF-8"
 # Permanently delete any bitstreams flagged as "deleted" in DSpace, on the first of every month at 01:00
 # (This ensures that any files which were deleted from DSpace are actually removed from your local filesystem.
 #  By default they are just marked as deleted, but are not removed from the filesystem.)
-0 1 1 * * dspace $DSPACE/bin/dspace cleanup >> $DSPACE/log/cron_logs.log 2>&1
+30 2 1 * * dspace $DSPACE/bin/dspace cleanup >> $DSPACE/log/cron_logs.log 2>&1
 
 #----------------
 # YEARLY TASKS (Recommended to be run once per year)
@@ -103,4 +103,4 @@ JAVA_OPTS="-Xmx512M -Xms512M -Dfile.encoding=UTF-8"
 # This ensures each year has its own Solr index, which improves performance.
 # NOTE: ONLY NECESSARY IF YOU ARE RUNNING SOLR STATISTICS
 # NOTE: This is scheduled here for 2:00AM so that it happens *after* the daily cleaning & re-optimization of this index.
-0 2 1 1 * dspace $DSPACE/bin/dspace stats-util -s >> $DSPACE/log/cron_logs.log 2>&1
+30 3 1 1 * dspace $DSPACE/bin/dspace stats-util -s >> $DSPACE/log/cron_logs.log 2>&1
