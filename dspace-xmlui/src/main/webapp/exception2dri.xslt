@@ -43,14 +43,15 @@ Created by Tim Donohue
             <i18n:text>xmlui.error.contact_msg</i18n:text>
           </p>
           <p>
-            <xref><xsl:attribute name="target"><xsl:value-of select="$contextPath"/>/contact</xsl:attribute><i18n:text>xmlui.error.contact</i18n:text></xref> ||  
+            <xref><xsl:attribute name="target"><xsl:value-of select="$contextPath"/>/contact</xsl:attribute><i18n:text>xmlui.error.contact</i18n:text></xref>
+<!--            ||  -->
             <!-- Create a link which lets users optionally display the error stacktrace (using JQuery) -->
-            <xref target="#" onclick="javascript:jQuery('#errorstack').toggleClass('hidden');"><i18n:text>xmlui.error.show_stack</i18n:text></xref>
+<!--            <xref target="#" onclick="javascript:jQuery('#errorstack').toggleClass('hidden');"><i18n:text>xmlui.error.show_stack</i18n:text></xref>-->
           </p>
           <!-- Include the Java stacktrace on the page, but hide it from view by default. -->
-          <p id="errorstack" rend="pre hidden">
-            <xsl:apply-templates select="ex:stacktrace"/>
-          </p>
+<!--          <p id="errorstack" rend="pre hidden">-->
+<!--            <xsl:apply-templates select="ex:stacktrace"/>-->
+<!--          </p>-->
         </div>
       </body>
       <options/>
