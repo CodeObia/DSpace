@@ -80,6 +80,48 @@
                 This contexts complies with OpenAIRE Guidelines for Literature Repositories v3.0.
             </Description>
         </Context>
+
+        <Context baseurl="agris" name="AGRIS Context">
+            <!-- OpenAIRE filter -->
+            <Filter ref="AGRISFilter"/>
+            <!-- Metadata Formats -->
+            <Format ref="oaidc"/>
+            <Format ref="mets"/>
+            <Format ref="xoai"/>
+            <Format ref="didl"/>
+            <Format ref="dim"/>
+            <Format ref="ore"/>
+            <Format ref="rdf"/>
+            <Format ref="etdms"/>
+            <Format ref="mods"/>
+            <Format ref="qdc"/>
+            <Format ref="marc"/>
+            <Format ref="uketd_dc"/>
+            <Description>
+                This contexts complies with AGRIS Guidelines.
+            </Description>
+        </Context>
+
+        <Context baseurl="icarda_agris" name="ICARDA-AGRIS Context">
+            <!-- OpenAIRE filter -->
+            <Filter ref="ICARDAAGRISFilter"/>
+            <!-- Metadata Formats -->
+            <Format ref="oaidc"/>
+            <Format ref="mets"/>
+            <Format ref="xoai"/>
+            <Format ref="didl"/>
+            <Format ref="dim"/>
+            <Format ref="ore"/>
+            <Format ref="rdf"/>
+            <Format ref="etdms"/>
+            <Format ref="mods"/>
+            <Format ref="qdc"/>
+            <Format ref="marc"/>
+            <Format ref="uketd_dc"/>
+            <Description>
+                This contexts complies with AGRIS Guidelines.
+            </Description>
+        </Context>
     </Contexts>
 
 
@@ -315,6 +357,60 @@
             </Definition>
         </Filter>
 
+        <!-- AGRISFilter filter for records returned by OAI-PMH.
+             By default, return an Item record where dc.type is one of AGRIS types
+             This filter is only used in the AGRIS context ([oai]/AGRIS).
+        -->
+        <Filter id="AGRISFilter">
+            <Definition>
+                <And>
+                    <LeftCondition>
+                        <Or>
+                            <LeftCondition>
+                                <Custom ref="itemAccessCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="itemWithdrawnCondition"/>
+                            </RightCondition>
+                        </Or>
+                    </LeftCondition>
+                    <RightCondition>
+                        <Custom ref="AGRISDocumentTypeCondition"/>
+                    </RightCondition>
+                </And>
+            </Definition>
+        </Filter>
+
+        <!-- ICARDAFilter filter for records returned by OAI-PMH.
+             By default, return an Item record where cg.contributor.center is ICARDA.
+        -->
+        <Filter id="ICARDAAGRISFilter">
+            <Definition>
+                <And>
+                    <LeftCondition>
+                        <Or>
+                            <LeftCondition>
+                                <Custom ref="itemAccessCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="itemWithdrawnCondition"/>
+                            </RightCondition>
+                        </Or>
+                    </LeftCondition>
+                    <RightCondition>
+                        <And>
+                            <LeftCondition>
+                                <Custom ref="AGRISDocumentTypeCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="ICARDAContributorCondition"/>
+                            </RightCondition>
+                        </And>
+                    </RightCondition>
+                </And>
+            </Definition>
+        </Filter>
+
         <!-- This condition determines if an Item has a "dc.type" field
              which contains "Thesis". -->
         <CustomCondition id="thesisDocumentTypeCondition">
@@ -408,6 +504,46 @@
                 <string name="value">info:eu-repo/grantAgreement/</string>
             </Configuration>
         </CustomCondition>
+
+        <!-- This condition determines if an Item has a "dc.type" field
+             specifying one of the valid AGRIS document types. -->
+        <CustomCondition id="AGRISDocumentTypeCondition">
+            <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
+            <Configuration>
+                <string name="field">dc.type</string>
+                <string name="operator">equal</string>
+                <list name="values">
+                    <string>Book</string>
+                    <string>Book Chapter</string>
+                    <string>Brief</string>
+                    <string>Brochure</string>
+                    <string>Conference Paper</string>
+                    <string>Conference Proceedings</string>
+                    <string>Dataset</string>
+                    <string>Guidelines</string>
+                    <string>Journal Article</string>
+                    <string>Manual</string>
+                    <string>Report</string>
+                    <string>Thesis</string>
+                    <string>Training Material</string>
+                    <string>Working Paper</string>
+                </list>
+            </Configuration>
+        </CustomCondition>
+
+        <!-- This condition determines if an Item has a "cg.contributor.center" field is ICARDA. -->
+        <CustomCondition id="ICARDAContributorCondition">
+            <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
+            <Configuration>
+                <string name="field">cg.contributor.center</string>
+                <string name="operator">equal</string>
+                <list name="values">
+                    <string>International Center for Agricultural Research in the Dry Areas - ICARDA</string>
+                    <string>International Center for Agricultural Research in the Dry Areas</string>
+                    <string>ICARDA</string>
+                </list>
+            </Configuration>
+        </CustomCondition>
     </Filters>
 
     <Sets>
@@ -419,6 +555,16 @@
         <Set id="openaireSet">
             <Spec>openaire</Spec>
             <Name>OpenAIRE</Name>
+            <!-- Just an alias -->
+        </Set>
+        <Set id="agrisSet">
+            <Spec>agris</Spec>
+            <Name>AGRIS</Name>
+            <!-- Just an alias -->
+        </Set>
+        <Set id="icardaAgrisSet">
+            <Spec>icarda_agris</Spec>
+            <Name>ICARDA-AGRIS</Name>
             <!-- Just an alias -->
         </Set>
     </Sets>
