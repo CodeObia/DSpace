@@ -71,17 +71,6 @@
 				</name>
 			</xsl:for-each>
 
-			<!-- <name type="personal"><role><roleTerm type="text" authority="marcrelator">Metadata contact</roleTerm><roleTerm type="code" authority="marcrelator">mdc</roleTerm></role><namePart> cg.contact </namePart></name> -->
-			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='contact']/doc:element/doc:field[@name='value']">
-				<name type="personal">
-					<role>
-						<roleTerm type="text" authority="marcrelator">Metadata contact</roleTerm>
-						<roleTerm type="code" authority="marcrelator">mdc</roleTerm>
-					</role>
-					<namePart><xsl:value-of select="."/></namePart>
-				</name>
-			</xsl:for-each>
-
 			<!-- <name type="corporate"><role><roleTerm type="text"> * </roleTerm></role><affiliation> cg.contributor.* </affiliation></name> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='contributor']/doc:element/doc:element/doc:field[@name='value']">
 				<xsl:variable name="contributor_type"><xsl:value-of select="../../@name"/></xsl:variable>
@@ -138,9 +127,9 @@
 				</xsl:if>
 			</xsl:if>
 
-			<!-- <genre> dc.type </genre> -->
+			<!-- <typeOfResource> dc.type </typeOfResource> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='type']/doc:element/doc:field[@name='value']">
-				<genre><xsl:value-of select="." /></genre>
+				<typeOfResource><xsl:value-of select="." /></typeOfResource>
 			</xsl:for-each>
 
 			<!-- <physicalDescription><form> dc.format </form></physicalDescription> -->
@@ -249,10 +238,10 @@
 				</relatedItem>
 			</xsl:if>
 
-			<!-- <language><languageTerm type="code" authority="iso639-3"> dc.language </languageTerm></language> -->
+			<!-- <language><languageTerm type="code" authority="iso639-1"> dc.language </languageTerm></language> -->
             <xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='language']/doc:element/doc:field[@name='value']">
 				<language>
-					<languageTerm type="code" authority="iso639-3"><xsl:value-of select="." /></languageTerm>
+					<languageTerm type="code" authority="iso639-1"><xsl:value-of select="." /></languageTerm>
 				</language>
 			</xsl:for-each>
 

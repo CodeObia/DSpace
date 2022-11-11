@@ -215,7 +215,8 @@ RUN sed -i "s/#CONFIG_DSPACE_PROXY_PORT#/$CONFIG_DSPACE_PROXY_PORT/g" "$CATALINA
     fi \
     # Make sure the crontab uses the correct DSpace directory
     && sed -i "s#DSPACE=/dspace#DSPACE=$DSPACE_HOME#g" /etc/cron.d/dspace-maintenance-tasks \
-    && rm -rf /tmp/*
+    && rm -rf /tmp/* \
+    && chmod 644 /etc/cron.d/dspace-maintenance-tasks
 
 # Install runtime dependencies
 RUN apt-get update \
