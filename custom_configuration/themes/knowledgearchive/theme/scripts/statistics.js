@@ -72,8 +72,10 @@ function statistics_charts() {
                     }
                 }
             },
-
-
+            tooltip: {
+                headerFormat: '',
+                pointFormat: '{point.category}: <b>{point.y} </b>{point.series.name}'
+            },
             series: [{
                 name: 'Views',
                 data: views
@@ -132,7 +134,8 @@ function statistics_charts() {
                 verticalAlign: 'top'
             },
             tooltip: {
-                pointFormat: '<b>{point.y}</b> ({point.percentage:.1f}%)'
+                headerFormat: '',
+                pointFormat: '{point.name}: <b>{point.y} </b>({point.percentage:.1f}%)'
             },
             plotOptions: {
                 pie: {

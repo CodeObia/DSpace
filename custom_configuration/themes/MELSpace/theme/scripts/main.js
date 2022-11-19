@@ -192,11 +192,12 @@ function Visits() {
                 type: 'pie'
             },
             title: {
-                text: 'All time ' + GDPR_popover_chart,
+                text: 'All time',
                 useHTML: true
             },
             tooltip: {
-                pointFormat: '<b>{point.y} </b>({point.percentage:.1f}%)'
+                headerFormat: '',
+                pointFormat: '{point.name}: <b>{point.y} </b>({point.percentage:.1f}%)'
             },
             plotOptions: {
                 pie: {
@@ -221,6 +222,7 @@ function Visits() {
                 ]
             }]
         });
+        $('#ChartContainer span.highcharts-title').append(' ' + GDPR_popover_chart);
     }
     $('.popovers').popover({html: true});
 
