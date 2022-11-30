@@ -253,32 +253,16 @@
             </xsl:choose>
         </div>
 		<span>
-			<xsl:choose>
-                <xsl:when test="dim:field[@element='identifier'][not(@qualifier)][last()]">
-                    <xsl:element name="a">
-                        <xsl:attribute name="class">view-download</xsl:attribute>
-                        <xsl:attribute name="href">
-                            <xsl:value-of select="dim:field[@element='identifier'][not(@qualifier)][last()]/node()"/>
-                        </xsl:attribute>
-                        <xsl:element name="i">
-                            <xsl:attribute name="class">glyphicon glyphicon-download-alt</xsl:attribute>
-                        </xsl:element>
-                        View/Open
-                    </xsl:element>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:element name="a">
-                        <xsl:attribute name="href">
-                            <xsl:value-of select="dim:field[@element='identifier'][not(@qualifier)][1]/node()"/>
-                        </xsl:attribute>
-                        <xsl:choose>
-                            <xsl:when test="dim:field[@element='identifier'][not(@qualifier)][1]/node()">
-                                View/Open
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:element>
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:if test="dim:field[@mdschema='mel' and @element='file' and @qualifier='hash'][1]/node()!=''">
+                <xsl:element name="a">
+                    <xsl:attribute name="class">view-download</xsl:attribute>
+                    <xsl:variable name="mel-download-link" select="concat('https://mel.cgiar.org/reporting/downloadmelspace/hash/', dim:field[@mdschema='mel' and @element='file' and @qualifier='hash'][1]/node())"/>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="$mel-download-link"/>
+                    </xsl:attribute>
+                    View/Open
+                </xsl:element>
+            </xsl:if>
             <xsl:if test="dim:field[@mdschema='mel' and @element='contact' and @qualifier='email'][1]/node()!=''">
                 <xsl:element name="div">
                     <xsl:attribute name="class">send_cg_contact</xsl:attribute>
@@ -779,7 +763,7 @@
     </xsl:template>
 
     <xsl:template match="dim:field" mode="itemDetailView-DIM">
-        <xsl:if test="not((./@mdschema = 'mel' and ./@element = 'ISO3166/MA') or (./@mdschema = 'mel' and ./@element = 'ISO3166-1/ALFA3') or (./@mdschema = 'mel' and ./@element = 'iso3166-1/Numeric') or (./@mdschema = 'mel' and ./@element = 'partner' and ./@qualifier = 'id') or (./@mdschema = 'mel' and ./@element = 'file' and ./@qualifier = 'thumbnail') or (./@mdschema = 'mel' and ./@element = 'date' and ./@qualifier = 'year') or (./@mdschema = 'mel' and ./@element = 'licence' and ./@qualifier = 'image') or (./@mdschema = 'mel' and ./@element = 'contact' and ./@qualifier = 'email') or (./@mdschema = 'mel' and ./@element = 'contact' and ./@qualifier = 'domain') or (./@mdschema = 'mel' and ./@element = 'subject' and ./@qualifier = 'agrovoc'))">
+        <xsl:if test="not((./@mdschema = 'mel' and ./@element = 'ISO3166/MA') or (./@mdschema = 'mel' and ./@element = 'ISO3166-1/ALFA3') or (./@mdschema = 'mel' and ./@element = 'iso3166-1/Numeric') or (./@mdschema = 'mel' and ./@element = 'partner' and ./@qualifier = 'id') or (./@mdschema = 'mel' and ./@element = 'file' and ./@qualifier = 'thumbnail') or (./@mdschema = 'mel' and ./@element = 'file' and ./@qualifier = 'hash') or (./@mdschema = 'mel' and ./@element = 'date' and ./@qualifier = 'year') or (./@mdschema = 'mel' and ./@element = 'licence' and ./@qualifier = 'image') or (./@mdschema = 'mel' and ./@element = 'contact' and ./@qualifier = 'email') or (./@mdschema = 'mel' and ./@element = 'contact' and ./@qualifier = 'domain') or (./@mdschema = 'mel' and ./@element = 'subject' and ./@qualifier = 'agrovoc'))">
             <xsl:variable name="elementValue" select="./node()"/>
             <xsl:if test="$elementValue != ''">
                 <tr>
