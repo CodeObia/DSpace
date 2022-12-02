@@ -129,6 +129,11 @@
                         </div>
                     </div>
                     <xsl:call-template name="itemSummaryView-DIM-date"/>
+                    <xsl:if test="count(dim:field[@mdschema='cg' and @element='isijournal'][not(@qualifier)]) = 1">
+                        <h5>
+                            ISI journal
+                        </h5>
+                    </xsl:if>
                     <xsl:if test="count(dim:field[@mdschema='mel' and @element='impact-factor'][not(@qualifier)]) = 1">
                         <h5>
                             <i18n:text>xmlui.dri2xhtml.METS-1.0.item-impact-factor</i18n:text>:
@@ -149,6 +154,7 @@
                     <div class="row">
                         <div class="col-sm-8">
                             <xsl:call-template name="itemSummaryView-DIM-URI"/>
+                            <xsl:call-template name="itemSummaryView-DIM-OTHER-URI"/>
                             <xsl:call-template name="itemSummaryView-DIM-DOI"/>
                             <xsl:call-template name="itemSummaryView-collections"/>
                         </div>
@@ -289,7 +295,7 @@
         <xsl:if test="dim:field[@element='identifier' and @qualifier='citation']">
             <div class="simple-item-view-description item-page-field-wrapper table">
                 <h5 class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-citation</i18n:text></h5>
-                <div>
+                <div class="unicode-bidi-text">
                     <xsl:for-each select="dim:field[@element='identifier' and @qualifier='citation']">
                         <xsl:choose>
                             <xsl:when test="node()">
@@ -315,7 +321,7 @@
         <xsl:if test="dim:field[@element='description' and @qualifier='abstract']">
             <div class="simple-item-view-description item-page-field-wrapper table">
                 <h5 class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text></h5>
-                <div>
+                <div class="unicode-bidi-text">
                     <xsl:for-each select="dim:field[@element='description' and @qualifier='abstract']">
                         <xsl:choose>
                             <xsl:when test="node()">
@@ -437,7 +443,7 @@
     <xsl:template name="itemSummaryView-DIM-URI">
         <xsl:if test="dim:field[@element='identifier' and @qualifier='uri' and descendant::text()]">
             <div class="simple-item-view-uri item-page-field-wrapper table">
-                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-uri</i18n:text></h5>
+                <h5>DSpace <i18n:text>xmlui.dri2xhtml.METS-1.0.item-uri</i18n:text></h5>
                 <span>
                     <xsl:for-each select="dim:field[@element='identifier' and @qualifier='uri']">
                         <a>
@@ -448,6 +454,30 @@
                         </a>
                         <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='uri']) != 0">
                             <br/>
+                        </xsl:if>
+                    </xsl:for-each>
+                </span>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-OTHER-URI">
+        <xsl:if test="dim:field[@element='identifier' and not(@qualifier) and descendant::text() and not(starts-with(descendant::text(), 'https://mel.cgiar.org/reporting/download'))]">
+            <div class="simple-item-view-uri item-page-field-wrapper table">
+                <h5>Other <i18n:text>xmlui.dri2xhtml.METS-1.0.item-uri</i18n:text></h5>
+                <span>
+                    <xsl:for-each select="dim:field[@element='identifier' and not(@qualifier)]">
+                        <xsl:variable name="other-uri" select="./node()"/>
+                        <xsl:if test="not(starts-with($other-uri, 'https://mel.cgiar.org/reporting/download'))">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:copy-of select="$other-uri"/>
+                                </xsl:attribute>
+                                <xsl:copy-of select="$other-uri"/>
+                            </a>
+                            <xsl:if test="count(following-sibling::dim:field[@element='identifier' and not(@qualifier)]) != 0">
+                                <br/>
+                            </xsl:if>
                         </xsl:if>
                     </xsl:for-each>
                 </span>
@@ -555,7 +585,7 @@
         <xsl:if test="dim:field[@element='subject' and not(@qualifier)]">
             <div class="simple-item-view-description item-page-field-wrapper table">
                 <h5 class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-subjects</i18n:text></h5>
-                <div>
+                <div class="unicode-bidi-text">
                     <xsl:for-each select="dim:field[@element='subject' and not(@qualifier)]">
                         <xsl:choose>
                             <xsl:when test="node()">
@@ -582,7 +612,7 @@
         <xsl:if test="dim:field[@mdschema='mel' and @element='subject' and @qualifier='agrovoc']">
             <div class="simple-item-view-description item-page-field-wrapper table">
                 <h5 class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-agrovoc-terms</i18n:text></h5>
-                <div>
+                <div class="unicode-bidi-text">
                     <xsl:for-each select="dim:field[@mdschema='mel' and @element='subject' and @qualifier='agrovoc']">
                         <xsl:choose>
                             <xsl:when test="node()">
@@ -782,7 +812,7 @@
                         </xsl:if>
                     </td>
 
-                    <td class="word-break">
+                    <td class="word-break unicode-bidi-text">
                         <xsl:copy-of select="./node()"/>
                     </td>
                     <td>
