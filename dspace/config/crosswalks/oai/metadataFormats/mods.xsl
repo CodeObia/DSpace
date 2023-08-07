@@ -107,12 +107,20 @@
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='publisher']/doc:element/doc:field[@name='value']">
 				<originInfo eventType="publisher">
 					<publisher><xsl:value-of select="." /></publisher>
-					<!-- <dateIssued encoding="iso8601"> dc.date.issued </dateIssued> -->
-					<xsl:if test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
-						<dateIssued encoding="iso8601">
-							<xsl:value-of select="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
-						</dateIssued>
-					</xsl:if>
+					<xsl:choose>
+						<!-- <dateIssued encoding="iso8601"> dc.date.issued </dateIssued> -->
+						<xsl:when test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']">
+							<dateIssued encoding="iso8601">
+								<xsl:value-of select="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</dateIssued>
+						</xsl:when>
+						<!-- <dateIssued encoding="iso8601"> dc.date </dateIssued> -->
+						<xsl:when test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
+							<dateIssued encoding="iso8601">
+								<xsl:value-of select="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</dateIssued>
+						</xsl:when>
+					</xsl:choose>
 				</originInfo>
 			</xsl:for-each>
 
@@ -120,9 +128,20 @@
 			<xsl:if test="not(doc:metadata/doc:element[@name='dc']/doc:element[@name='publisher']/doc:element/doc:field[@name='value'])">
 				<xsl:if test="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
 					<originInfo eventType="publication">
-						<dateIssued encoding="iso8601">
-							<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
-						</dateIssued>
+						<xsl:choose>
+							<!-- <dateIssued encoding="iso8601"> dc.date.issued </dateIssued> -->
+							<xsl:when test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']">
+								<dateIssued encoding="iso8601">
+									<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+								</dateIssued>
+							</xsl:when>
+							<!-- <dateIssued encoding="iso8601"> dc.date </dateIssued> -->
+							<xsl:when test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
+								<dateIssued encoding="iso8601">
+									<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+								</dateIssued>
+							</xsl:when>
+						</xsl:choose>
 					</originInfo>
 				</xsl:if>
 			</xsl:if>
@@ -149,7 +168,7 @@
 			<!-- <identifier type="*"> dc.identifier.* </identifier> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='identifier']/doc:element/doc:element/doc:field[@name='value']">
 				<xsl:variable name="identifier_type"><xsl:value-of select="../../@name"/></xsl:variable>
-				<xsl:if test="(($identifier_type != 'citation') and ($identifier_type != 'status'))">
+				<xsl:if test="(($identifier_type != 'citation') and ($identifier_type != 'status') and ($identifier_type != 'doi') and ($identifier_type != 'issn') and ($identifier_type != 'isbn'))">
 					<identifier>
 						<xsl:attribute name="type"><xsl:value-of select="$identifier_type"/></xsl:attribute>
 						<xsl:value-of select="."/>
@@ -167,6 +186,16 @@
 				</identifier>
 			</xsl:for-each>
 
+			<!-- <identifier type="doi"> dc.identifier.doi </identifier> -->
+			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='identifier']/doc:element[@name='doi']/doc:element/doc:field[@name='value']">
+				<identifier>
+					<xsl:attribute name="type">
+						<xsl:value-of select="../../@name" />
+					</xsl:attribute>
+					<xsl:value-of select="." />
+				</identifier>
+			</xsl:for-each>
+
 			<!-- <identifier type="issn"> cg.issn </identifier> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='issn']/doc:element/doc:field[@name='value']">
 				<identifier type="issn">
@@ -174,8 +203,22 @@
 				</identifier>
 			</xsl:for-each>
 
+			<!-- <identifier type="issn"> dc.identifier.issn </identifier> -->
+			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='identifier']/doc:element[@name='issn']/doc:element/doc:field[@name='value']">
+				<identifier type="issn">
+					<xsl:value-of select="." />
+				</identifier>
+			</xsl:for-each>
+
 			<!-- <identifier type="isbn"> cg.isbn </isbn> -->
 			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='isbn']/doc:element/doc:field[@name='value']">
+				<identifier type="isbn">
+					<xsl:value-of select="." />
+				</identifier>
+			</xsl:for-each>
+
+			<!-- <identifier type="issn"> dc.identifier.issn </identifier> -->
+			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='identifier']/doc:element[@name='isbn']/doc:element/doc:field[@name='value']">
 				<identifier type="isbn">
 					<xsl:value-of select="." />
 				</identifier>
@@ -235,13 +278,20 @@
 							</date>
 						</part>
 					</xsl:if>
+					<xsl:if test="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']">
+						<part>
+							<date>
+								<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</date>
+						</part>
+					</xsl:if>
 				</relatedItem>
 			</xsl:if>
 
-			<!-- <language><languageTerm type="code" authority="iso639-1"> dc.language </languageTerm></language> -->
+			<!-- <language><languageTerm type="code" authority="iso639-3"> dc.language </languageTerm></language> -->
             <xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='language']/doc:element/doc:field[@name='value']">
 				<language>
-					<languageTerm type="code" authority="iso639-1"><xsl:value-of select="." /></languageTerm>
+					<languageTerm type="code" authority="iso639-3"><xsl:value-of select="." /></languageTerm>
 				</language>
 			</xsl:for-each>
 
@@ -308,6 +358,13 @@
 							<xsl:value-of select="$access_status"/>
 						</xsl:otherwise>
 					</xsl:choose>
+				</accessCondition>
+			</xsl:if>
+			<!-- <accessCondition type="restriction on access" displayLabel="Access Status"> cg.identifier.status </accessCondition> -->
+			<xsl:if test="doc:metadata/doc:element[@name='cg']/doc:element[@name='identifier']/doc:element[@name='status']/doc:element/doc:field[@name='value']">
+				<xsl:variable name="access_status"><xsl:value-of select="doc:metadata/doc:element[@name='cg']/doc:element[@name='identifier']/doc:element[@name='status']/doc:element/doc:field[@name='value']/text()"></xsl:value-of></xsl:variable>
+				<accessCondition type="restriction on access" displayLabel="Access Status">
+					<xsl:value-of select="$access_status"/>
 				</accessCondition>
 			</xsl:if>
 

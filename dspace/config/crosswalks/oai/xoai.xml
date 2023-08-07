@@ -122,6 +122,27 @@
                 This contexts complies with AGRIS Guidelines.
             </Description>
         </Context>
+
+        <Context baseurl="worldfish_agris" name="WorldFish-AGRIS Context">
+            <!-- OpenAIRE filter -->
+            <Filter ref="WorldFishAGRISFilter"/>
+            <!-- Metadata Formats -->
+            <Format ref="oaidc"/>
+            <Format ref="mets"/>
+            <Format ref="xoai"/>
+            <Format ref="didl"/>
+            <Format ref="dim"/>
+            <Format ref="ore"/>
+            <Format ref="rdf"/>
+            <Format ref="etdms"/>
+            <Format ref="mods"/>
+            <Format ref="qdc"/>
+            <Format ref="marc"/>
+            <Format ref="uketd_dc"/>
+            <Description>
+                This contexts complies with AGRIS Guidelines.
+            </Description>
+        </Context>
     </Contexts>
 
 
@@ -411,6 +432,36 @@
             </Definition>
         </Filter>
 
+        <!-- WorldFishFilter filter for records returned by OAI-PMH.
+             By default, return an Item record where cg.contributor.affiliation is WorldFish.
+        -->
+        <Filter id="WorldFishAGRISFilter">
+            <Definition>
+                <And>
+                    <LeftCondition>
+                        <Or>
+                            <LeftCondition>
+                                <Custom ref="itemAccessCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="itemWithdrawnCondition"/>
+                            </RightCondition>
+                        </Or>
+                    </LeftCondition>
+                    <RightCondition>
+                        <And>
+                            <LeftCondition>
+                                <Custom ref="AGRISDocumentTypeCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="WorldFishContributorCondition"/>
+                            </RightCondition>
+                        </And>
+                    </RightCondition>
+                </And>
+            </Definition>
+        </Filter>
+
         <!-- This condition determines if an Item has a "dc.type" field
              which contains "Thesis". -->
         <CustomCondition id="thesisDocumentTypeCondition">
@@ -542,6 +593,20 @@
                 </list>
             </Configuration>
         </CustomCondition>
+
+        <!-- This condition determines if an Item has a "cg.contributor.center" field is ICARDA. -->
+        <CustomCondition id="WorldFishContributorCondition">
+            <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
+            <Configuration>
+                <string name="field">cg.contributor.affiliation</string>
+                <string name="operator">equal</string>
+                <list name="values">
+                    <string>WorldFish - WF</string>
+                    <string>WorldFish</string>
+                    <string>WF</string>
+                </list>
+            </Configuration>
+        </CustomCondition>
     </Filters>
 
     <Sets>
@@ -563,6 +628,11 @@
         <Set id="icardaAgrisSet">
             <Spec>icarda_agris</Spec>
             <Name>ICARDA-AGRIS</Name>
+            <!-- Just an alias -->
+        </Set>
+        <Set id="worldfishAgrisSet">
+            <Spec>worldfish_agris</Spec>
+            <Name>WorldFish-AGRIS</Name>
             <!-- Just an alias -->
         </Set>
     </Sets>
