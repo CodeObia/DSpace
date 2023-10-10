@@ -120,6 +120,18 @@
 								<xsl:value-of select="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
 							</dateIssued>
 						</xsl:when>
+						<!-- <dateIssued encoding="iso8601"> dcterms.available </dateIssued> -->
+						<xsl:when test="/doc:metadata/doc:element[@name='dcterms']/doc:element[@name='available']/doc:element/doc:field[@name='value']">
+							<dateIssued encoding="iso8601">
+								<xsl:value-of select="/doc:metadata/doc:element[@name='dcterms']/doc:element[@name='available']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</dateIssued>
+						</xsl:when>
+						<!-- <dateIssued encoding="iso8601"> dcterms.issued </dateIssued> -->
+						<xsl:when test="/doc:metadata/doc:element[@name='dcterms']/doc:element[@name='issued']/doc:element/doc:field[@name='value']">
+							<dateIssued encoding="iso8601">
+								<xsl:value-of select="/doc:metadata/doc:element[@name='dcterms']/doc:element[@name='issued']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</dateIssued>
+						</xsl:when>
 					</xsl:choose>
 				</originInfo>
 			</xsl:for-each>

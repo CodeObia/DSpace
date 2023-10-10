@@ -29,6 +29,7 @@ ARG CONFIG_MAIL_ALERT_RECIPIENT="dspace-noreply@myu.edu"
 ARG CONFIG_MAIL_REGISTRATION_NOTIFY="dspace-noreply@myu.edu"
 ARG CONFIG_HANDLE_CANONICAL_PREFIX="http:\/\/hdl.handle.net\/"
 ARG CONFIG_HANDLE_PREFIX="123456789"
+ARG CONFIG_DATE_FIELD="dcterms.available"
 
 # Active DSpace theme
 ARG CONFIG_DSPACE_ACTIVE_THEME="Mirage2"

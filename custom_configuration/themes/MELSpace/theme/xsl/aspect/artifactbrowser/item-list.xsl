@@ -116,28 +116,31 @@
                 <xsl:call-template name="itemDetailList-DIM-authors" />
 
                 <xsl:text> </xsl:text>
-                <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
-	                <span class="publisher-date h4">  <small>
-	                    <xsl:text>(</xsl:text>
-	                    <xsl:if test="dim:field[@element='publisher']">
-	                        <span class="publisher">
-	                            <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
-	                        </span>
-	                        <xsl:text>, </xsl:text>
-	                    </xsl:if>
-	                    <span class="date">
-	                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
-	                    </span>
-	                    <xsl:text>)</xsl:text>
-                        </small></span>
+                <xsl:if test="dim:field[@mdschema='dcterms' and @element='issued']">
+	                <span class="publisher-date h4">
+                        <small>
+                            <xsl:text>(</xsl:text>
+                            <xsl:if test="dim:field[@element='publisher']">
+                                <span class="publisher">
+                                    <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
+                                </span>
+                                <xsl:text>, </xsl:text>
+                            </xsl:if>
+                            <span class="date">
+                                <xsl:value-of
+                                        select="substring(dim:field[@mdschema='dcterms' and @element='issued']/node(),1,10)"/>
+                            </span>
+                            <xsl:text>)</xsl:text>
+                        </small>
+                    </span>
                 </xsl:if>
             </div>
 			<div class="artifact-info">
 				<span class="element-label">Date: </span>
 				<xsl:element name="span">
                     <xsl:choose>
-                        <xsl:when test="dim:field[@element='date']">
-                            <xsl:value-of select="dim:field[@element='date'][1]/node()"/>
+                        <xsl:when test="dim:field[@mdschema='dcterms' and @element='available']">
+                            <xsl:value-of select="dim:field[@mdschema='dcterms' and @element='available'][1]/node()"/>
                         </xsl:when>
                         <xsl:otherwise>
                         </xsl:otherwise>
@@ -376,7 +379,7 @@
                         </xsl:choose>
                     </span>
                     <xsl:text> </xsl:text>
-                    <xsl:if test="dim:field[@element='date' and @qualifier='issued'] or dim:field[@element='publisher']">
+                    <xsl:if test="dim:field[@mdschema='dcterms' and @element='issued'] or dim:field[@element='publisher']">
                         <span class="publisher-date">
                             <xsl:text>(</xsl:text>
                             <xsl:if test="dim:field[@element='publisher']">
@@ -386,7 +389,7 @@
                                 <xsl:text>, </xsl:text>
                             </xsl:if>
                             <span class="date">
-                                <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+                                <xsl:value-of select="substring(dim:field[@mdschema='dcterms' and @element='issued']/node(),1,10)"/>
                             </span>
                             <xsl:text>)</xsl:text>
                         </span>
