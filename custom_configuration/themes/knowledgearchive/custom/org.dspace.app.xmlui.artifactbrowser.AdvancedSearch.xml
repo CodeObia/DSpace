@@ -2,5 +2,13 @@
 <message key="xmlui.Discovery.AbstractSearch.type_type">Filter by: Type</message>
 <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_region">Region</message>
 <message key="xmlui.Discovery.AbstractSearch.type_region">Filter by: Region</message>
-<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_crp">CRP</message>
-<message key="xmlui.Discovery.AbstractSearch.type_crp">Filter by: CRP</message>
+<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_crp">CGIAR Research Programs</message>
+<message key="xmlui.Discovery.AbstractSearch.type_crp">Filter by: CGIAR Research Programs</message>
+<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_publisher_source">Publisher source</message>
+<message key="xmlui.Discovery.AbstractSearch.type_publisher_source">Filter by: Publisher source</message>
+<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_country">Location/Country</message>
+<message key="xmlui.Discovery.AbstractSearch.type_country">Filter by: Location/Country</message>
+<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_impact_area">Impact Area</message>
+<message key="xmlui.Discovery.AbstractSearch.type_impact_area">Filter by: Impact Area</message>
+<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_initiative">CGIAR Initiative</message>
+<message key="xmlui.Discovery.AbstractSearch.type_initiative">Filter by: CGIAR Initiative</message>

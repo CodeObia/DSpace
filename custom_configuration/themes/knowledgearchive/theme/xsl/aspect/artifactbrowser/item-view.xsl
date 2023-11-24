@@ -615,6 +615,22 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template name="substring-after-last">
+        <xsl:param name="string"/>
+        <xsl:param name="delimiter"/>
+        <xsl:choose>
+            <xsl:when test="contains($string, $delimiter)">
+                <xsl:call-template name="substring-after-last">
+                    <xsl:with-param name="string" select="substring-after($string, $delimiter)"/>
+                    <xsl:with-param name="delimiter" select="$delimiter"/>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$string"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xsl:template name="itemSummaryView-DIM-file-section-entry">
         <xsl:param name="href" />
         <xsl:param name="mimetype" />
@@ -623,6 +639,8 @@
         <xsl:param name="title" />
         <xsl:param name="label" />
         <xsl:param name="size" />
+        <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
+        <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
         <div>
             <a>
                 <xsl:call-template name="bitstream-link-attributes">
@@ -639,6 +657,45 @@
                     </xsl:with-param>
                 </xsl:call-template>
                 <xsl:choose>
+                    <!--Get the file extension-->
+                    <xsl:when test="contains($label-1, 'label') and string-length(substring-after($label,'.'))!=0">
+                        <xsl:variable name="extension">
+                            <xsl:call-template name="substring-after-last">
+                                <xsl:with-param name="string" select="$label" />
+                                <xsl:with-param name="delimiter" select="'.'" />
+                            </xsl:call-template>
+                        </xsl:variable>
+                        <xsl:value-of select="translate($extension, $lowercase, $uppercase)"/>
+                    </xsl:when>
+                    <xsl:when test="contains($label-1, 'title') and string-length(substring-after($title,'.'))!=0">
+                        <xsl:variable name="extension">
+                            <xsl:call-template name="substring-after-last">
+                                <xsl:with-param name="string" select="$title" />
+                                <xsl:with-param name="delimiter" select="'.'" />
+                            </xsl:call-template>
+                        </xsl:variable>
+                        <xsl:value-of select="translate($extension, $lowercase, $uppercase)"/>
+                    </xsl:when>
+                    <xsl:when test="contains($label-2, 'label') and string-length(substring-after($label,'.'))!=0">
+                        <xsl:variable name="extension">
+                            <xsl:call-template name="substring-after-last">
+                                <xsl:with-param name="string" select="$label" />
+                                <xsl:with-param name="delimiter" select="'.'" />
+                            </xsl:call-template>
+                        </xsl:variable>
+                        <xsl:value-of select="translate($extension, $lowercase, $uppercase)"/>
+                    </xsl:when>
+                    <xsl:when test="contains($label-2, 'title') and string-length(substring-after($title,'.'))!=0">
+                        <xsl:variable name="extension">
+                            <xsl:call-template name="substring-after-last">
+                                <xsl:with-param name="string" select="$title" />
+                                <xsl:with-param name="delimiter" select="'.'" />
+                            </xsl:call-template>
+                        </xsl:variable>
+                        <xsl:value-of select="translate($extension, $lowercase, $uppercase)"/>
+                    </xsl:when>
+
+                    <!--Otherwise get the file name-->
                     <xsl:when test="contains($label-1, 'label') and string-length($label)!=0">
                         <xsl:value-of select="$label"/>
                     </xsl:when>
@@ -668,26 +725,30 @@
                         </xsl:call-template>
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:text> (</xsl:text>
-                <xsl:choose>
-                    <xsl:when test="$size &lt; 1024">
-                        <xsl:value-of select="$size"/>
-                        <i18n:text>xmlui.dri2xhtml.METS-1.0.size-bytes</i18n:text>
-                    </xsl:when>
-                    <xsl:when test="$size &lt; 1024 * 1024">
-                        <xsl:value-of select="substring(string($size div 1024),1,5)"/>
-                        <i18n:text>xmlui.dri2xhtml.METS-1.0.size-kilobytes</i18n:text>
-                    </xsl:when>
-                    <xsl:when test="$size &lt; 1024 * 1024 * 1024">
-                        <xsl:value-of select="substring(string($size div (1024 * 1024)),1,5)"/>
-                        <i18n:text>xmlui.dri2xhtml.METS-1.0.size-megabytes</i18n:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="substring(string($size div (1024 * 1024 * 1024)),1,5)"/>
-                        <i18n:text>xmlui.dri2xhtml.METS-1.0.size-gigabytes</i18n:text>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:text>)</xsl:text>
+                <small>
+                    <i>
+                        <xsl:text> (</xsl:text>
+                        <xsl:choose>
+                            <xsl:when test="$size &lt; 1024">
+                                <xsl:value-of select="$size"/>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.size-bytes</i18n:text>
+                            </xsl:when>
+                            <xsl:when test="$size &lt; 1024 * 1024">
+                                <xsl:value-of select="substring(string($size div 1024),1,5)"/>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.size-kilobytes</i18n:text>
+                            </xsl:when>
+                            <xsl:when test="$size &lt; 1024 * 1024 * 1024">
+                                <xsl:value-of select="substring(string($size div (1024 * 1024)),1,5)"/>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.size-megabytes</i18n:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="substring(string($size div (1024 * 1024 * 1024)),1,5)"/>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.size-gigabytes</i18n:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:text>)</xsl:text>
+                    </i>
+                </small>
             </a>
         </div>
     </xsl:template>
