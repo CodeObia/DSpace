@@ -30,6 +30,7 @@ ARG CONFIG_MAIL_REGISTRATION_NOTIFY="dspace-noreply@myu.edu"
 ARG CONFIG_HANDLE_CANONICAL_PREFIX="http:\/\/hdl.handle.net\/"
 ARG CONFIG_HANDLE_PREFIX="123456789"
 ARG CONFIG_DATE_FIELD="dcterms.available"
+ARG CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT="3"
 
 # Active DSpace theme
 ARG CONFIG_DSPACE_ACTIVE_THEME="Mirage2"
@@ -137,6 +138,9 @@ RUN if [ -f org.dspace.app.xmlui.artifactbrowser.AbstractSearch.xml ]; \
     else sed -i -e 's/#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_DETAILS_ADDITIONAL#//g' /tmp/dspace/dspace/config/spring/api/discovery.xml \
         && echo "CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_DETAILS_ADDITIONAL IS NOT EXISTS"; \
     fi \
+# Set facet limit
+    && sed -i -e "s/#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#/$CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT/g" \
+           /tmp/dspace/dspace/config/spring/api/discovery.xml \
 # Add additional org.dspace.discovery.configuration.DiscoveryMoreLikeThisConfiguration
     && if [ -f org.dspace.discovery.configuration.DiscoveryMoreLikeThisConfiguration.xml ]; \
     then sed -i -e '/#CONFIG_SPRING_API_DISCOVERY_SIMILARITY_METADATA_ADDITIONAL#/{r org.dspace.discovery.configuration.DiscoveryMoreLikeThisConfiguration.xml' -e 'd}' /tmp/dspace/dspace/config/spring/api/discovery.xml; \

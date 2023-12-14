@@ -4,8 +4,6 @@
 <message key="xmlui.Discovery.AbstractSearch.type_region">Filter by: Region</message>
 <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_crp">CGIAR Research Programs</message>
 <message key="xmlui.Discovery.AbstractSearch.type_crp">Filter by: CGIAR Research Programs</message>
-<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_publisher_source">Publisher source</message>
-<message key="xmlui.Discovery.AbstractSearch.type_publisher_source">Filter by: Publisher source</message>
 <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_country">Location/Country</message>
 <message key="xmlui.Discovery.AbstractSearch.type_country">Filter by: Location/Country</message>
 <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_impact_area">Impact Area</message>
