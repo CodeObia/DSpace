@@ -61,3 +61,13 @@
     </property>
     <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
 </bean>
+<bean id="searchFilterProject" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+    <property name="indexFieldName" value="project"/>
+    <property name="metadataFields">
+        <list>
+            <value>cg.contributor.project</value>
+        </list>
+    </property>
+    <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+    <property name="sortOrderSidebar" value="COUNT"/>
+</bean>

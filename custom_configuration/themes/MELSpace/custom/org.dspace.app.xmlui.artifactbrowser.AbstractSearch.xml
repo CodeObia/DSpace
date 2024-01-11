@@ -10,3 +10,5 @@
 <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.crp">CRP</message>
 <message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.year">Year</message>
 <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.year">Year</message>
+<message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.project">Project</message>
+<message key="xmlui.ArtifactBrowser.SimpleSearch.filter.project">Project</message>

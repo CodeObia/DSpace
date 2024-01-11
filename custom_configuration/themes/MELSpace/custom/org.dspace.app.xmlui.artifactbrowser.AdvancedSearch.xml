@@ -10,3 +10,5 @@
 <message key="xmlui.Discovery.AbstractSearch.type_crp">Filter by: CRP</message>
 <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_year">Year</message>
 <message key="xmlui.Discovery.AbstractSearch.type_year">Filter by: Year</message>
+<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_project">Project</message>
+<message key="xmlui.Discovery.AbstractSearch.type_project">Filter by: Project</message>

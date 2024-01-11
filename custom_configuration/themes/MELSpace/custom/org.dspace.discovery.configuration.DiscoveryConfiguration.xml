@@ -4,3 +4,4 @@
 <ref bean="searchFilterCountry"/>
 <ref bean="searchFilterCrp"/>
 <ref bean="searchFilterYear"/>
+<ref bean="searchFilterProject"/>
