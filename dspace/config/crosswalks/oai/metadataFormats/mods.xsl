@@ -138,24 +138,34 @@
 
 			<!-- <originInfo eventType="publication"><dateIssued encoding="iso8601"> dc.date.issued </dateIssued></originInfo> -->
 			<xsl:if test="not(doc:metadata/doc:element[@name='dc']/doc:element[@name='publisher']/doc:element/doc:field[@name='value'])">
-				<xsl:if test="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
-					<originInfo eventType="publication">
-						<xsl:choose>
-							<!-- <dateIssued encoding="iso8601"> dc.date.issued </dateIssued> -->
-							<xsl:when test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']">
-								<dateIssued encoding="iso8601">
-									<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
-								</dateIssued>
-							</xsl:when>
-							<!-- <dateIssued encoding="iso8601"> dc.date </dateIssued> -->
-							<xsl:when test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
-								<dateIssued encoding="iso8601">
-									<xsl:value-of select="doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
-								</dateIssued>
-							</xsl:when>
-						</xsl:choose>
-					</originInfo>
-				</xsl:if>
+				<originInfo eventType="publication">
+					<xsl:choose>
+						<!-- <dateIssued encoding="iso8601"> dc.date.issued </dateIssued> -->
+						<xsl:when test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']">
+							<dateIssued encoding="iso8601">
+								<xsl:value-of select="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element[@name='issued']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</dateIssued>
+						</xsl:when>
+						<!-- <dateIssued encoding="iso8601"> dc.date </dateIssued> -->
+						<xsl:when test="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']">
+							<dateIssued encoding="iso8601">
+								<xsl:value-of select="/doc:metadata/doc:element[@name='dc']/doc:element[@name='date']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</dateIssued>
+						</xsl:when>
+						<!-- <dateIssued encoding="iso8601"> dcterms.available </dateIssued> -->
+						<xsl:when test="/doc:metadata/doc:element[@name='dcterms']/doc:element[@name='available']/doc:element/doc:field[@name='value']">
+							<dateIssued encoding="iso8601">
+								<xsl:value-of select="/doc:metadata/doc:element[@name='dcterms']/doc:element[@name='available']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</dateIssued>
+						</xsl:when>
+						<!-- <dateIssued encoding="iso8601"> dcterms.issued </dateIssued> -->
+						<xsl:when test="/doc:metadata/doc:element[@name='dcterms']/doc:element[@name='issued']/doc:element/doc:field[@name='value']">
+							<dateIssued encoding="iso8601">
+								<xsl:value-of select="/doc:metadata/doc:element[@name='dcterms']/doc:element[@name='issued']/doc:element/doc:field[@name='value']/text()"></xsl:value-of>
+							</dateIssued>
+						</xsl:when>
+					</xsl:choose>
+				</originInfo>
 			</xsl:if>
 
 			<!-- <typeOfResource> dc.type </typeOfResource> -->
