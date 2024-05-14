@@ -326,8 +326,8 @@
 				</subject>
 			</xsl:for-each>
 
-			<!-- <subject><hierarchicalGeographic><country> cg.coverage.country </country></hierarchicalGeographic></subject> -->
-			<xsl:for-each select="doc:metadata/doc:element[@name='cg']/doc:element[@name='coverage']/doc:element[@name='country']/doc:element/doc:field[@name='value']">
+			<!-- <subject><hierarchicalGeographic><country> mel.ISO3166/MA </country></hierarchicalGeographic></subject> -->
+			<xsl:for-each select="doc:metadata/doc:element[@name='mel']/doc:element[@name='ISO3166/MA']/doc:element/doc:field[@name='value']">
 				<subject>
 					<hierarchicalGeographic>
 						<country><xsl:value-of select="." /></country>
