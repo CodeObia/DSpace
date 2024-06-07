@@ -4,7 +4,17 @@
 */target/
 dspace/modules/*/target/
 Dockerfile.*
+Dockerfile
 dspace/src/main/docker/dspace-postgres-pgcrypto
 dspace/src/main/docker/dspace-postgres-pgcrypto-curl
 dspace/src/main/docker/README.md
 dspace/src/main/docker-compose/
+pgdata
+solr_data
+assetstore
+solr-export/
+solr-export.tar.gz
+solr_data_temp/
+solr_export/
+docker-compose.yml
+.gitignore
