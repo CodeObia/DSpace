@@ -4,11 +4,12 @@ networks:
       config:
         # Define a custom subnet for our DSpace network, so that we can easily trust requests from host to container.
         # If you customize this value, be sure to customize the 'proxies.trusted.ipranges' env variable below.
-        - subnet: 172.23.0.0/16
+        - subnet: 172.24.0.0/16
 services:
   # DSpace (backend) webapp container
   dspace:
-    container_name: dspace
+    restart: unless-stopped
+    container_name: dspace7
     environment:
       # Below syntax may look odd, but it is how to override dspace.cfg settings via env variables.
       # See https://github.com/DSpace/DSpace/blob/main/dspace/config/config-definition.xml
@@ -17,56 +18,72 @@ services:
       # dspace.dir: Must match with Dockerfile's DSPACE_INSTALL directory.
       dspace__P__dir: /dspace
       # Uncomment to set a non-default value for dspace.server.url or dspace.ui.url
-      # dspace__P__server__P__url: http://localhost:8080/server
-      # dspace__P__ui__P__url: http://localhost:4000
-      dspace__P__name: 'DSpace Started with Docker Compose'
+      dspace__P__server__P__url: http://localhost:8080/server
+      dspace__P__ui__P__url: http://localhost:4000
+      dspace__P__name: NAME
+      websvc__P__opensearch__P__shortname: SHORT_NAME
       # db.url: Ensure we are using the 'dspacedb' image for our database
       db__P__url: 'jdbc:postgresql://dspacedb:5432/dspace'
       # solr.server: Ensure we are using the 'dspacesolr' image for Solr
       solr__P__server: http://dspacesolr:8983/solr
       # proxies.trusted.ipranges: This setting is required for a REST API running in Docker to trust requests
       # from the host machine. This IP range MUST correspond to the 'dspacenet' subnet defined above.
-      proxies__P__trusted__P__ipranges: '172.23.0'
-      LOGGING_CONFIG: /dspace/config/log4j2-container.xml
-    image: "${DOCKER_REGISTRY:-docker.io}/${DOCKER_OWNER:-dspace}/dspace:${DSPACE_VER:-dspace-7_x-test}"
+      proxies__P__trusted__P__ipranges: '172.24.0'
+      handle__P__prefix: 123456789
+      webui__P__itemlist__P__sort___D___option__P__2: dateissued:dcterms.available:date
+      webui__P__feed__P__item__P__date: dateissued:dcterms.available:date
+      xmlui__P__google__P__analytics__P__key: ''
+      mail__P__server: ''
+      mail__P__server__P__username: ''
+      mail__P__server__P__password: ''
+      mail__P__server__P__port: ''
+      mail__P__from__P__address: ''
+      mail__P__feedback__P__recipient: ''
+      feedback__P__recipient: ''
+      mail__P__admin: ''
+      mail__P__alert__P__recipient: ''
+      mail__P__registration__P__notify: ''
+    image: "${DOCKER_OWNER:-dspace}/dspace:${DSPACE_VER:-dspace-7_x}"
     build:
       context: .
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile
     depends_on:
-    - dspacedb
+      - dspacedb
     networks:
       - dspacenet
     ports:
-    - published: 8080
-      target: 8080
-    - published: 8009
-      target: 8009
-    - published: 8000
-      target: 8000
+      - published: 8080
+        target: 8080
+      - published: 8009
+        target: 8009
+      - published: 8000
+        target: 8000
     stdin_open: true
     tty: true
     volumes:
-    # Keep DSpace assetstore directory between reboots
-    - assetstore:/dspace/assetstore
-    # Mount local [src]/dspace/config/ to container. This syncs your local configs with container
-    # NOTE: Environment variables specified above will OVERRIDE any configs in local.cfg or dspace.cfg
-    - ./dspace/config:/dspace/config
+      # Keep DSpace assetstore directory between reboots
+      - ./assetstore:/dspace/assetstore
+      # Mount local [src]/dspace/config/ to container. This syncs your local configs with container
+      # NOTE: Environment variables specified above will OVERRIDE any configs in local.cfg or dspace.cfg
+      - ./dspace/config:/dspace/config
+      - ./solr_export:/dspace/solr-export:rw
     # Ensure that the database is ready BEFORE starting tomcat
     # 1. While a TCP connection to dspacedb port 5432 is not available, continue to sleep
     # 2. Then, run database migration to init database tables
     # 3. Finally, start Tomcat
     entrypoint:
-    - /bin/bash
-    - '-c'
-    - |
-      while (!</dev/tcp/dspacedb/5432) > /dev/null 2>&1; do sleep 1; done;
-      /dspace/bin/dspace database migrate
-      catalina.sh run
+      - /bin/bash
+      - '-c'
+      - |
+        while (!</dev/tcp/dspacedb/5432) > /dev/null 2>&1; do sleep 1; done;
+        /dspace/bin/dspace database migrate
+        catalina.sh run
   # DSpace PostgreSQL database container
   dspacedb:
+    restart: unless-stopped
     container_name: dspacedb
     # Uses a custom Postgres image with pgcrypto installed
-    image: "${DOCKER_REGISTRY:-docker.io}/${DOCKER_OWNER:-dspace}/dspace-postgres-pgcrypto:${DSPACE_VER:-dspace-7_x}"
+    image: "${DOCKER_OWNER:-dspace}/dspace-postgres-pgcrypto:${DSPACE_VER:-dspace-7_x}"
     build:
       # Must build out of subdirectory to have access to install script for pgcrypto
       context: ./dspace/src/main/docker/dspace-postgres-pgcrypto/
@@ -81,12 +98,13 @@ services:
     stdin_open: true
     tty: true
     volumes:
-    # Keep Postgres data directory between reboots
-    - pgdata:/pgdata
+      # Keep Postgres data directory between reboots
+      - ./pgdata:/pgdata
   # DSpace Solr container
   dspacesolr:
+    restart: unless-stopped
     container_name: dspacesolr
-    image: "${DOCKER_REGISTRY:-docker.io}/${DOCKER_OWNER:-dspace}/dspace-solr:${DSPACE_VER:-dspace-7_x}"
+    image: "${DOCKER_OWNER:-dspace}/dspace-solr:${DSPACE_VER:-dspace-7_x}"
     build:
       context: ./dspace/src/main/docker/dspace-solr/
       # Provide path to Solr configs necessary to build Docker image
@@ -104,25 +122,45 @@ services:
     working_dir: /var/solr/data
     volumes:
     # Keep Solr data directory between reboots
-    - solr_data:/var/solr/data
+      - "./solr_data:/var/solr/data:rw"
     # Initialize all DSpace Solr cores then start Solr:
     # * First, run precreate-core to create the core (if it doesn't yet exist). If exists already, this is a no-op
     # * Second, copy configsets to this core:
     #   Updates to Solr configs require the container to be rebuilt/restarted: `docker compose -p d7 up -d --build dspacesolr`
     entrypoint:
-    - /bin/bash
-    - '-c'
-    - |
-      init-var-solr
-      precreate-core authority /opt/solr/server/solr/configsets/authority
-      cp -r /opt/solr/server/solr/configsets/authority/* authority
-      precreate-core oai /opt/solr/server/solr/configsets/oai
-      cp -r /opt/solr/server/solr/configsets/oai/* oai
-      precreate-core search /opt/solr/server/solr/configsets/search
-      cp -r /opt/solr/server/solr/configsets/search/* search
-      precreate-core statistics /opt/solr/server/solr/configsets/statistics
-      cp -r /opt/solr/server/solr/configsets/statistics/* statistics
-      exec solr -f
+      - /bin/bash
+      - '-c'
+      - |
+        init-var-solr
+        precreate-core authority /opt/solr/server/solr/configsets/authority
+        cp -r /opt/solr/server/solr/configsets/authority/* authority
+        precreate-core oai /opt/solr/server/solr/configsets/oai
+        cp -r /opt/solr/server/solr/configsets/oai/* oai
+        precreate-core search /opt/solr/server/solr/configsets/search
+        cp -r /opt/solr/server/solr/configsets/search/* search
+        precreate-core statistics /opt/solr/server/solr/configsets/statistics
+        cp -r /opt/solr/server/solr/configsets/statistics/* statistics
+        exec solr -f
+  dspacestatistics:
+    restart: unless-stopped
+    container_name: dspacestatistics
+    image: "${DOCKER_OWNER:-dspace}/dspace-statistics:${DSPACE_VER:-dspace-7_x}"
+    build:
+      context: .
+      dockerfile: ./dspace/src/main/docker/dspace-statistics-api/Dockerfile
+    networks:
+      dspacenet:
+    ports:
+      - published: 3016
+        target: 3017
+    stdin_open: true
+    tty: true
+    working_dir: /dspace-statistics-api-js
+    entrypoint:
+      - /bin/bash
+      - '-c'
+      - |
+        npm run start:dev
 volumes:
   assetstore:
   pgdata:
