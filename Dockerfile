@@ -1,97 +1,107 @@
-# This image will be published as dspace/dspace
-# See https://github.com/DSpace/DSpace/tree/main/dspace/src/main/docker for usage details
 #
-# - note: default tag for branch: dspace/dspace: dspace/dspace:dspace-7_x
-
-# This Dockerfile uses JDK11 by default, but has also been tested with JDK17.
-# To build with JDK17, use "--build-arg JDK_VERSION=17"
+# DSpace image
+#
 ARG JDK_VERSION=17
 
-ARG CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT="10"
-ARG CONFIG_DSPACE_ACTIVE_THEME="THEME_NAME"
-ARG DSPACE_INSTALL=/dspace
+FROM openjdk:${JDK_VERSION}-bullseye AS build
+LABEL maintainer="Mohammad Salem <mohammad.salem@codeobia.com>"
 
-# Step 1 - Run Maven Build
-FROM dspace/dspace-dependencies:dspace-7_x AS build
-ARG TARGET_DIR=dspace-installer
-WORKDIR /app
-# The dspace-installer directory will be written to /install
-RUN mkdir /install \
-    && chown -Rv dspace: /install \
-    && chown -Rv dspace: /app
-USER dspace
-# Copy the DSpace source code (from local machine) into the workdir (excluding .dockerignore contents)
-ADD --chown=dspace . /app/
+ENV CONFIG_DSPACE_ACTIVE_THEME=MELSpace
 
-# Copy customized DSpace local.cfg
-COPY --chown=dspace:dspace config/local.cfg "$DSPACE_INSTALL"/config/
-
-# Add additional org.dspace.discovery.configuration.DiscoveryConfiguration
-RUN if [ -f org.dspace.discovery.configuration.DiscoveryConfiguration.xml ]; \
-    then sed -i -e '/#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#/{r org.dspace.discovery.configuration.DiscoveryConfiguration.xml' -e 'd}' /app/dspace/config/spring/api/discovery.xml; \
-    else sed -i -e 's/#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#//g' /app/dspace/config/spring/api/discovery.xml \
-        && echo "CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL IS NOT EXISTS"; \
-    fi \
-# Add additional org.dspace.discovery.configuration.DiscoveryConfiguration.details details
-    && if [ -f org.dspace.discovery.configuration.DiscoveryConfiguration.details.xml ]; \
-    then sed -i -e '/#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_DETAILS_ADDITIONAL#/{r org.dspace.discovery.configuration.DiscoveryConfiguration.details.xml' -e 'd}' /app/dspace/config/spring/api/discovery.xml; \
-    else sed -i -e 's/#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_DETAILS_ADDITIONAL#//g' /app/dspace/config/spring/api/discovery.xml \
-        && echo "CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_DETAILS_ADDITIONAL IS NOT EXISTS"; \
-    fi \
-# Set facet limit
-    && sed -i -e "s/#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#/$CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT/g" \
-           /app/dspace/config/spring/api/discovery.xml \
-# Add additional org.dspace.discovery.configuration.DiscoveryMoreLikeThisConfiguration
-    && if [ -f org.dspace.discovery.configuration.DiscoveryMoreLikeThisConfiguration.xml ]; \
-    then sed -i -e '/#CONFIG_SPRING_API_DISCOVERY_SIMILARITY_METADATA_ADDITIONAL#/{r org.dspace.discovery.configuration.DiscoveryMoreLikeThisConfiguration.xml' -e 'd}' /app/dspace/config/spring/api/discovery.xml; \
-    else sed -i -e 's/#CONFIG_SPRING_API_DISCOVERY_SIMILARITY_METADATA_ADDITIONAL#//g' /app/dspace/config/spring/api/discovery.xml \
-        && echo "CONFIG_SPRING_API_DISCOVERY_SIMILARITY_METADATA_ADDITIONAL IS NOT EXISTS"; \
-    fi
-
-# Build DSpace (note: this build doesn't include the optional, deprecated "dspace-rest" webapp)
-# Copy the dspace-installer directory to /install.  Clean up the build to keep the docker image small
-# Maven flags here ensure that we skip building test environment and skip all code verification checks.
-# These flags speed up this compilation as much as reasonably possible.
+# Environment variables
+ENV DSPACE_HOME=/dspace
 ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 ENV MAVEN_FLAGS="-Denforcer.skip=true -Dcheckstyle.skip=true -Dlicense.skip=true -Dxml.skip=true -Pdspace-rest"
-RUN mvn --no-transfer-progress package ${MAVEN_FLAGS} && \
-  mv /app/dspace/target/${TARGET_DIR}/* /install && \
-  mvn clean
-# Remove the server webapp to keep image small.
-RUN rm -rf /install/webapps/server/
 
-# Step 2 - Run Ant Deploy
-FROM eclipse-temurin:${JDK_VERSION} AS ant_build
-ARG TARGET_DIR=dspace-installer
-# COPY the /install directory from 'build' container to /dspace-src in this container
-COPY --from=build /install /dspace-src
-WORKDIR /dspace-src
-# Create the initial install deployment using ANT
-ENV ANT_VERSION 1.10.13
-ENV ANT_HOME /tmp/ant-$ANT_VERSION
-ENV PATH $ANT_HOME/bin:$PATH
+ENV MAVEN_VERSION=3.9.7
+
+# Use ant from a tarball so we don't have to install it from apt with Java 11
+ENV ANT_VERSION=1.10.13
+ENV ANT_HOME=/tmp/ant-$ANT_VERSION
+ENV PATH=$ANT_HOME/bin:$PATH
 # Need wget to install ant
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends wget \
-    && apt-get purge -y --auto-remove \
-    && rm -rf /var/lib/apt/lists/*
-# Download and install 'ant'
-RUN mkdir $ANT_HOME && \
-    wget -qO- "https://archive.apache.org/dist/ant/binaries/apache-ant-$ANT_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C $ANT_HOME
-# Run necessary 'ant' deploy scripts
-RUN ant init_installation update_configs update_code update_webapps
+RUN wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+    && tar -xvf apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+    && mv apache-maven-${MAVEN_VERSION} /opt/ \
+    && mkdir $ANT_HOME \
+    && wget -qO- "https://archive.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz" | tar -zx --strip-components=1 -C $ANT_HOME
 
-# Step 3 - Run tomcat
-# Create a new tomcat image that does not retain the the build directory contents
+RUN /opt/apache-maven-${MAVEN_VERSION}/bin/mvn -version
+WORKDIR /tmp
+
+# Add a non-root user to perform the Maven build
+RUN useradd -r -s /bin/bash -m -d "$DSPACE_HOME" dspace
+
+# copy source to $WORKDIR/dspace
+COPY --chown=dspace:dspace . dspace/
+
+# Change to dspace user for build and install
+USER dspace
+
+# Copy customized DSpace local.cfg
+COPY --chown=dspace:dspace custom_configuration/config/local.cfg dspace/config/
+
+WORKDIR /tmp
+
+# Change back to dspace user to build the code
+USER dspace
+
+# Build DSpace
+RUN cd dspace && /opt/apache-maven-${MAVEN_VERSION}/bin/mvn --no-transfer-progress package ${MAVEN_FLAGS}
+
+# Install compiled applications to $DSPACE_HOME
+RUN cd dspace/dspace/target/dspace-installer \
+    && ant init_installation init_configs install_code copy_webapps
+
+# Copy handle server
+RUN if [ -d /tmp/dspace/custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THEME/handle-server ]; \
+        then cp -r /tmp/dspace/custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THEME/handle-server $DSPACE_HOME/; \
+        else echo "No Handle server files found"; \
+    fi
+
+# Copy custom discovery settings
+COPY --chown=dspace:dspace custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THEME/discovery.xml $DSPACE_HOME/config/spring/api/discovery.xml
+
+# Change back to root user for cleanup
+USER root
+
+# Cleanup build deps
+RUN rm -rf /var/lib/apt/lists/* \
+    && apt-get -y autoremove \
+    && rm -rf "$DSPACE_HOME/.m2" /tmp/*
+
 FROM tomcat:9-jdk${JDK_VERSION}
-# NOTE: DSPACE_INSTALL must align with the "dspace.dir" default configuration.
-ENV DSPACE_INSTALL=/dspace
-# Copy the /dspace directory from 'ant_build' container to /dspace in this container
-COPY --from=ant_build /dspace $DSPACE_INSTALL
-# Expose Tomcat port and AJP port
-EXPOSE 8080 8009
 # Give java extra memory (2GB)
-ENV JAVA_OPTS=-Xmx2000m
+ENV JAVA_OPTS=-Xmx2024m
+# Set some variables for the Tomcat container. Some were already set above in
+# the build container, but they don't get propagated in multi-stage builds.
+ENV DSPACE_HOME=/dspace \
+    CATALINA_OPTS="-Xmx2024m -Xms2024m -Dfile.encoding=UTF-8"
+# Make sure to set PATH *after* setting $VIRTUAL_ENV or else it won't exist yet!
+ENV PATH="$CATALINA_HOME/bin":"$DSPACE_HOME"/bin:$PATH
+
+# Add DSpace user to this container *without* creating the home directory
+# because we will copy it from the build container
+RUN useradd -r -s /bin/bash -M -d "$DSPACE_HOME" dspace
+
+# Remove default Tomcat webapps
+RUN rm -rf "$CATALINA_HOME/webapps"
+
+# Copy the $DSPACE_HOME (/dspace) directory from the build container to
+# the Tomcat runtime container.
+COPY --chown=dspace:dspace --from=build "$DSPACE_HOME" "$DSPACE_HOME"
+
+# Add webapps Tomcat's webapps directory.
+RUN mv -f "$DSPACE_HOME/webapps" "$CATALINA_HOME/" \
+    && sed -i s/CONFIDENTIAL/NONE/ "$CATALINA_HOME"/webapps/rest/WEB-INF/web.xml
+
+# Install root filesystem
+COPY custom_configuration/rootfs /
+
+# Make sure the crontab uses the correct DSpace directory
+RUN sed -i "s#DSPACE=/dspace#DSPACE=$DSPACE_HOME#g" /etc/cron.d/dspace-maintenance-tasks \
+    && rm -rf /tmp/* \
+    && chmod 644 /etc/cron.d/dspace-maintenance-tasks
 
 # Install runtime dependencies
 RUN apt-get update \
@@ -102,41 +112,31 @@ RUN apt-get update \
     cron \
     less \
     vim \
-    schedtool \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get -y autoremove
 
-# Install root filesystem
-COPY rootfs /
+WORKDIR "$DSPACE_HOME"
 
-# Copy Handle server
-RUN if [ -d /app/custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THEME/handle-server ]; \
-        then cp -r /app/custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THEME/handle-server $DSPACE_INSTALL/; \
-        else echo "No Handle server files found"; \
-    fi \
-    # Make sure the crontab uses the correct DSpace directory
-    && sed -i "s#DSPACE=/dspace#DSPACE=$DSPACE_INSTALL#g" /etc/cron.d/dspace-maintenance-tasks \
-    && rm -rf /tmp/* \
-    && chmod 644 /etc/cron.d/dspace-maintenance-tasks
+COPY custom_configuration/GeoLite2-City/GeoLite2-City.mmdb "$DSPACE_HOME"/config/
 
-COPY GeoLite2-City/GeoLite2-City.mmdb "$DSPACE_INSTALL"/config/
+RUN apt-get update \
+    && apt-get install -y \
+    schedtool \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get -y autoremove
+# Change to dspace user for for adding cron jobs
+USER dspace
+RUN (crontab -l 2>/dev/null; echo '# Compress DSpace logs (checker.log, cocoon.log, handle-plugin.log and solr.log) older than yesterday') | crontab - \
+    && (crontab -l 2>/dev/null; echo '20 0 * * * find /dspace/log -regextype posix-extended -iregex ".*\.log.*" ! -iregex ".*dspace\.log.*" ! -iregex ".*\.xz" ! -newermt "Yesterday" -exec schedtool -B -e ionice -c2 -n7 xz {} \; >> '$DSPACE_HOME'/log/cron_tab_logs.log 2>&1') | crontab - \
+    && (crontab -l 2>/dev/null; echo '# Compress DSpace logs (dspace.log) older than 1 week') | crontab - \
+    && (crontab -l 2>/dev/null; echo '25 0 * * * find /dspace/log -regextype posix-extended -iregex ".*dspace\.log.*" ! -iregex ".*\.xz" ! -newermt "1 week ago" -exec schedtool -B -e ionice -c2 -n7 xz {} \; >> '$DSPACE_HOME'/log/cron_tab_logs.log 2>&1') | crontab - \
+    && (crontab -l 2>/dev/null; echo '# Compress Tomcat logs (catalina, host-manager, localhost and manager) older older than yesterday') | crontab - \
+    && (crontab -l 2>/dev/null; echo '30 0 * * * find /usr/local/tomcat/logs -regextype posix-extended -iregex ".*\.log.*" ! -iregex ".*\.xz" ! -newermt "Yesterday" -exec schedtool -B -e ionice -c2 -n7 xz {} \; >> '$DSPACE_HOME'/log/cron_tab_logs.log 2>&1') | crontab - \
+    && (crontab -l 2>/dev/null; echo '# Compress Tomcat logs (localhost_access_log) older than 1 week') | crontab - \
+    && (crontab -l 2>/dev/null; echo '35 0 * * * find /usr/local/tomcat/logs -regextype posix-extended -iregex ".*\.txt" ! -iregex ".*\.xz" ! -newermt "1 week ago" -exec schedtool -B -e ionice -c2 -n7 xz {} \; >> '$DSPACE_HOME'/log/cron_tab_logs.log 2>&1') | crontab -
+USER root
 
-# Link the DSpace 'server' webapp into Tomcat's webapps directory.
-# This ensures that when we start Tomcat, it runs from /server path (e.g. http://localhost:8080/server/)
-RUN ln -s $DSPACE_INSTALL/webapps/server "$CATALINA_HOME"/webapps/server
-# If you wish to run "server" webapp off the ROOT path, then comment out the above RUN, and uncomment the below RUN.
-# You also MUST update the 'dspace.server.url' configuration to match.
-# Please note that server webapp should only run on one path at a time.
-#RUN mv /usr/local/tomcat/webapps/ROOT /usr/local/tomcat/webapps/ROOT.bk && \
-#    ln -s $DSPACE_INSTALL/webapps/server   /usr/local/tomcat/webapps/ROOT
-
-# Copy legacy REST API Tomcat config
-COPY config/rest.xml "$CATALINA_HOME"/conf/Catalina/localhost/
-# Overrides the requirement to connect to the legacy rest service over https
-COPY config/rest_web.xml "$DSPACE_INSTALL"/webapps/rest/WEB-INF/web.xml
-
-RUN useradd -r -s /bin/bash -m -d "$DSPACE_INSTALL" dspace
-RUN chown -R dspace:dspace "$DSPACE_INSTALL" "$CATALINA_HOME"
+RUN chown -R dspace:dspace "$DSPACE_HOME" /usr/local/tomcat/logs "$CATALINA_HOME"/conf
 
 ENV DSPACE_VERSION=7_x
 # Build info
@@ -146,4 +146,8 @@ RUN echo "Debian GNU/Linux `cat /etc/debian_version` image. (`uname -rsv`)" >> /
     && echo "\nNote: if you need to run commands interacting with DSpace you should enter the" >> /root/.built \
     && echo "container as the dspace user, ie: docker exec -it -u dspace dspace /bin/bash" >> /root/.built
 
-USER dspace
+# Ensure that the database is ready BEFORE starting tomcat
+# 1. While a TCP connection to dspacedb port 5432 is not available, continue to sleep
+# 2. Then, run database migration to init database tables
+# 3. Finally, run `start-dspace` script as root, then drop to dspace user
+CMD ["/bin/bash", "-c", "start-dspace"]

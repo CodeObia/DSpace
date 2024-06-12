@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+
+	Developed by DSpace @ Lyncode <dspace@lyncode.com>
+ -->
 <Configuration indented="false" maxListIdentifiersSize="100" maxListRecordsSize="100"
-    maxListSetsSize="100" stylesheet="static/style.xsl" xmlns="http://www.lyncode.com/XOAIConfiguration">
+               maxListSetsSize="100" stylesheet="static/style.xsl"
+               xmlns="http://www.lyncode.com/XOAIConfiguration">
 
     <Contexts>
         <Context baseurl="request" name="Default Context">
@@ -106,6 +117,69 @@
             <Format ref="qdc"/>
             <Description>
                 This context complies with the Rioxx metadata profile version 3
+            </Description>
+        </Context>
+
+        <Context baseurl="agris" name="AGRIS Context">
+            <!-- OpenAIRE filter -->
+            <Filter ref="AGRISFilter"/>
+            <!-- Metadata Formats -->
+            <Format ref="oaidc"/>
+            <Format ref="mets"/>
+            <Format ref="xoai"/>
+            <Format ref="didl"/>
+            <Format ref="dim"/>
+            <Format ref="ore"/>
+            <Format ref="rdf"/>
+            <Format ref="etdms"/>
+            <Format ref="mods"/>
+            <Format ref="qdc"/>
+            <Format ref="marc"/>
+            <Format ref="uketd_dc"/>
+            <Description>
+                This contexts complies with AGRIS Guidelines.
+            </Description>
+        </Context>
+
+        <Context baseurl="icarda_agris" name="ICARDA-AGRIS Context">
+            <!-- OpenAIRE filter -->
+            <Filter ref="ICARDAAGRISFilter"/>
+            <!-- Metadata Formats -->
+            <Format ref="oaidc"/>
+            <Format ref="mets"/>
+            <Format ref="xoai"/>
+            <Format ref="didl"/>
+            <Format ref="dim"/>
+            <Format ref="ore"/>
+            <Format ref="rdf"/>
+            <Format ref="etdms"/>
+            <Format ref="mods"/>
+            <Format ref="qdc"/>
+            <Format ref="marc"/>
+            <Format ref="uketd_dc"/>
+            <Description>
+                This contexts complies with AGRIS Guidelines.
+            </Description>
+        </Context>
+
+        <Context baseurl="worldfish_agris" name="WorldFish-AGRIS Context">
+            <!-- OpenAIRE filter -->
+            <Filter ref="WorldFishAGRISFilter"/>
+            <!-- Metadata Formats -->
+            <Format ref="oaidc"/>
+            <Format ref="mets"/>
+            <Format ref="xoai"/>
+            <Format ref="didl"/>
+            <Format ref="dim"/>
+            <Format ref="ore"/>
+            <Format ref="rdf"/>
+            <Format ref="etdms"/>
+            <Format ref="mods"/>
+            <Format ref="qdc"/>
+            <Format ref="marc"/>
+            <Format ref="uketd_dc"/>
+            <Description>
+                This contexts complies with AGRIS Guidelines.
             </Description>
         </Context>
 
@@ -394,6 +468,109 @@
             </Definition>
         </Filter>
 
+        <!-- Default filter for records returned by OAI-PMH.
+             By default, return an Item record:
+                * If it is publicly accessible
+                * OR it has been withdrawn (in order to display a tombstone record).
+             This filter is used by the default context ([oai]/request).
+        -->
+        <Filter id="defaultFilter">
+            <Definition>
+                <Or>
+                    <LeftCondition>
+                        <Custom ref="itemAccessCondition"/>
+                    </LeftCondition>
+                    <RightCondition>
+                        <Custom ref="itemWithdrawnCondition"/>
+                    </RightCondition>
+                </Or>
+            </Definition>
+        </Filter>
+
+        <!-- AGRISFilter filter for records returned by OAI-PMH.
+             By default, return an Item record where dc.type is one of AGRIS types
+             This filter is only used in the AGRIS context ([oai]/AGRIS).
+        -->
+        <Filter id="AGRISFilter">
+            <Definition>
+                <And>
+                    <LeftCondition>
+                        <Or>
+                            <LeftCondition>
+                                <Custom ref="itemAccessCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="itemWithdrawnCondition"/>
+                            </RightCondition>
+                        </Or>
+                    </LeftCondition>
+                    <RightCondition>
+                        <Custom ref="AGRISDocumentTypeCondition"/>
+                    </RightCondition>
+                </And>
+            </Definition>
+        </Filter>
+
+        <!-- ICARDAFilter filter for records returned by OAI-PMH.
+             By default, return an Item record where cg.contributor.center is ICARDA.
+        -->
+        <Filter id="ICARDAAGRISFilter">
+            <Definition>
+                <And>
+                    <LeftCondition>
+                        <Or>
+                            <LeftCondition>
+                                <Custom ref="itemAccessCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="itemWithdrawnCondition"/>
+                            </RightCondition>
+                        </Or>
+                    </LeftCondition>
+                    <RightCondition>
+                        <And>
+                            <LeftCondition>
+                                <Custom ref="AGRISDocumentTypeCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="ICARDAContributorCondition"/>
+                            </RightCondition>
+                        </And>
+                    </RightCondition>
+                </And>
+            </Definition>
+        </Filter>
+
+        <!-- WorldFishFilter filter for records returned by OAI-PMH.
+             By default, return an Item record where cg.contributor.affiliation is WorldFish.
+        -->
+        <Filter id="WorldFishAGRISFilter">
+            <Definition>
+                <And>
+                    <LeftCondition>
+                        <Or>
+                            <LeftCondition>
+                                <Custom ref="itemAccessCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="itemWithdrawnCondition"/>
+                            </RightCondition>
+                        </Or>
+                    </LeftCondition>
+                    <RightCondition>
+                        <And>
+                            <LeftCondition>
+                                <Custom ref="AGRISDocumentTypeCondition"/>
+                            </LeftCondition>
+                            <RightCondition>
+                                <Custom ref="WorldFishContributorCondition"/>
+                            </RightCondition>
+                        </And>
+                    </RightCondition>
+                </And>
+            </Definition>
+        </Filter>
+
         <!-- Rioxx v3.0 Final filter for records returned by OAI-PMH.
              By default, return an Item record:
                 * If it is publicly accessible
@@ -636,6 +813,57 @@
             </Configuration>
         </CustomCondition>
 
+        <!-- This condition determines if an Item has a "dc.type" field
+             specifying one of the valid AGRIS document types. -->
+        <CustomCondition id="AGRISDocumentTypeCondition">
+            <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
+            <Configuration>
+                <string name="field">dc.type</string>
+                <string name="operator">equal</string>
+                <list name="values">
+                    <string>Book</string>
+                    <string>Book Chapter</string>
+                    <string>Brief</string>
+                    <string>Conference Paper</string>
+                    <string>Conference Proceedings</string>
+                    <string>Dataset</string>
+                    <string>Journal Article</string>
+                    <string>Manual</string>
+                    <string>Report</string>
+                    <string>Thesis</string>
+                    <string>Training Material</string>
+                    <string>Working Paper</string>
+                </list>
+            </Configuration>
+        </CustomCondition>
+
+        <!-- This condition determines if an Item has a "cg.contributor.center" field is ICARDA. -->
+        <CustomCondition id="ICARDAContributorCondition">
+            <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
+            <Configuration>
+                <string name="field">cg.contributor.center</string>
+                <string name="operator">equal</string>
+                <list name="values">
+                    <string>International Center for Agricultural Research in the Dry Areas - ICARDA</string>
+                    <string>International Center for Agricultural Research in the Dry Areas</string>
+                    <string>ICARDA</string>
+                </list>
+            </Configuration>
+        </CustomCondition>
+
+        <!-- This condition determines if an Item has a "cg.contributor.center" field is ICARDA. -->
+        <CustomCondition id="WorldFishContributorCondition">
+        <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
+        <Configuration>
+            <string name="field">cg.contributor.affiliation</string>
+            <string name="operator">equal</string>
+            <list name="values">
+                <string>WorldFish - WF</string>
+                <string>WorldFish</string>
+                <string>WF</string>
+            </list>
+        </Configuration>
+
     </Filters>
 
     <Sets>
@@ -652,6 +880,21 @@
         <Set id="rioxxSet">
             <Spec>rioxx</Spec>
             <Name>Rioxx set</Name>
+            <!-- Just an alias -->
+        </Set>
+        <Set id="agrisSet">
+            <Spec>agris</Spec>
+            <Name>AGRIS</Name>
+            <!-- Just an alias -->
+        </Set>
+        <Set id="icardaAgrisSet">
+            <Spec>icarda_agris</Spec>
+            <Name>ICARDA-AGRIS</Name>
+            <!-- Just an alias -->
+        </Set>
+        <Set id="worldfishAgrisSet">
+            <Spec>worldfish_agris</Spec>
+            <Name>WorldFish-AGRIS</Name>
             <!-- Just an alias -->
         </Set>
     </Sets>
