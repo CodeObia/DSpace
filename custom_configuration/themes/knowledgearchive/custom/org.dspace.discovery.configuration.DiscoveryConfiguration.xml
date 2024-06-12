@@ -1,6 +1,0 @@
-<ref bean="searchFilterCrp"/>
-<ref bean="searchFilterInitiative"/>
-<ref bean="searchFilterType"/>
-<ref bean="searchFilterCountry"/>
-<ref bean="searchFilterRegion"/>
-<ref bean="searchFilterImpactArea"/>
