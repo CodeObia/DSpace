@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
 
-chown -R dspace:dspace $DSPACE_HOME
+chown -R dspace:dspace "$DSPACE_HOME" "$CATALINA_HOME"/logs "$CATALINA_HOME"/conf
+
+# Set facet limit
+sed -i -e "s/#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#/$CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT/g" $DSPACE_HOME/config/spring/api/discovery.xml
+
 # Start the cron service for DSpace's scheduled maintenance tasks
 # See: /etc/cron.d/dspace-maintenance-tasks
 service cron start
 
-while (!</dev/tcp/dspacedb/5432) > /dev/null 2>&1; do sleep 1; done;
+while (!</dev/tcp/dspacedb/5432) > /dev/null 2>&1; do echo "Waiting for database..." && sleep 1; done;
 
 /dspace/bin/dspace database migrate
 
 # Set the current container's IP in the handle server config
 CONTAINER_IP=$(awk 'END{print $1}' /etc/hosts)
 sed -i -E "s/\"bind_address\" = \"[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\"/\"bind_address\" = \"$CONTAINER_IP\"/" $DSPACE_HOME/handle-server/config.dct
-
-# Set facet limit
-sed -i -e "s/#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#/$CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT/g" $DSPACE_HOME/config/spring/api/discovery.xml
 
 # start the handle server (with su -p to preserve environment variables like PATH)
 su -p dspace -c "$DSPACE_HOME/bin/start-handle-server"

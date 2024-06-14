@@ -69,6 +69,8 @@ services:
       # NOTE: Environment variables specified above will OVERRIDE any configs in local.cfg or dspace.cfg
 #      - ./dspace/config:/dspace/config
       - ./solr_export:/dspace/solr-export:rw
+      - ./dspace_logs/dspace:/dspace/log/:rw
+      - ./dspace_logs/tomcat:/usr/local/tomcat/logs/:rw
   # DSpace PostgreSQL database container
   dspacedb:
     restart: unless-stopped

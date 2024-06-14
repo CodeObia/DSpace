@@ -18,3 +18,6 @@ solr_data_temp/
 solr_export/
 docker-compose.yml
 .gitignore
+DSPACE_BACKUP.sh
+IMPORT_DSPACE_DB.sh
+dspace_logs
