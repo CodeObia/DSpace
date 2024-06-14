@@ -165,9 +165,10 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterEntityType"/>
                 <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#-->
+                <ref bean="searchFilterType" />
                 <ref bean="searchFilterCrp"/>
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterCountry"/>
@@ -185,12 +186,13 @@
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
                 <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#-->
+                <ref bean="searchFilterType" />
                 <ref bean="searchFilterCrp"/>
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterCountry"/>
                 <ref bean="searchFilterRegion"/>
                 <ref bean="searchFilterImpactArea"/>
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
@@ -325,7 +327,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterEntityType"/>
             </list>
         </property>
@@ -338,7 +340,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
@@ -472,9 +474,10 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterEntityType"/>
                 <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#-->
+                <ref bean="searchFilterType" />
                 <ref bean="searchFilterCrp"/>
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterCountry"/>
@@ -492,12 +495,13 @@
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
                 <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#-->
+                <ref bean="searchFilterType" />
                 <ref bean="searchFilterCrp"/>
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterCountry"/>
                 <ref bean="searchFilterRegion"/>
                 <ref bean="searchFilterImpactArea"/>
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
@@ -624,7 +628,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterEntityType"/>
             </list>
         </property>
@@ -639,7 +643,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
@@ -1140,7 +1144,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterEntityType"/>
             </list>
         </property>
@@ -1153,7 +1157,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
@@ -1210,7 +1214,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterEntityType"/>
             </list>
         </property>
@@ -1223,7 +1227,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+<!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>

@@ -10,6 +10,8 @@
 # Unix shell script for starting Handle server.  WARNING this assumes any
 # previously running Handle servers have been terminated.
 
+export PATH=/opt/java/openjdk/bin:$PATH
+
 # Assume that this script is in the bin subdirectory of the DSpace
 # installation directory.
 BINDIR=`dirname $0`
