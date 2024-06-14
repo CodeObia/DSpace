@@ -19,14 +19,13 @@ ENV MAVEN_VERSION=3.9.7
 ENV ANT_VERSION=1.10.13
 ENV ANT_HOME=/tmp/ant-$ANT_VERSION
 ENV PATH=$ANT_HOME/bin:$PATH
-# Need wget to install ant
+# Install Maven and ant
 RUN wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
     && tar -xvf apache-maven-${MAVEN_VERSION}-bin.tar.gz \
     && mv apache-maven-${MAVEN_VERSION} /opt/ \
     && mkdir $ANT_HOME \
     && wget -qO- "https://archive.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz" | tar -zx --strip-components=1 -C $ANT_HOME
 
-RUN /opt/apache-maven-${MAVEN_VERSION}/bin/mvn -version
 WORKDIR /tmp
 
 # Add a non-root user to perform the Maven build
