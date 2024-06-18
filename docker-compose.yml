@@ -11,6 +11,17 @@ services:
     restart: unless-stopped
     container_name: dspace7
     environment:
+      POSTGRES_DB_HOST: dspacedb
+      POSTGRES_DB_PORT: 5432
+      POSTGRES_USER: dspace
+      POSTGRES_PASSWORD: dspace
+      POSTGRES_SCHEMA: dspace
+      POSTGRES_ADMIN_USER: postgres
+      POSTGRES_ADMIN_PASSWORD: postgres
+      ADMIN_EMAIL: ADMIN_EMAIL
+      ADMIN_FIRSTNAME: ADMIN_FIRSTNAME
+      ADMIN_LASTNAME: ADMIN_LASTNAME
+      ADMIN_PASSWD: ADMIN_PASSWD
       # Below syntax may look odd, but it is how to override dspace.cfg settings via env variables.
       # See https://github.com/DSpace/DSpace/blob/main/dspace/config/config-definition.xml
       # __P__ => "." (e.g. dspace__P__dir => dspace.dir)
@@ -30,6 +41,7 @@ services:
       # from the host machine. This IP range MUST correspond to the 'dspacenet' subnet defined above.
       proxies__P__trusted__P__ipranges: '172.24.0'
       handle__P__prefix: 123456789
+      LOGGING_CONFIG: /dspace/config/log4j2-container.xml
       webui__P__itemlist__P__sort___D___option__P__2: dateissued:dcterms.available:date
       webui__P__feed__P__item__P__date: dateissued:dcterms.available:date
       xmlui__P__google__P__analytics__P__key: ''
@@ -65,24 +77,18 @@ services:
     volumes:
       # Keep DSpace assetstore directory between reboots
       - ./assetstore:/dspace/assetstore
-      # Mount local [src]/dspace/config/ to container. This syncs your local configs with container
-      # NOTE: Environment variables specified above will OVERRIDE any configs in local.cfg or dspace.cfg
-#      - ./dspace/config:/dspace/config
-      - ./solr_export:/dspace/solr-export:rw
       - ./dspace_logs/dspace:/dspace/log/:rw
       - ./dspace_logs/tomcat:/usr/local/tomcat/logs/:rw
   # DSpace PostgreSQL database container
   dspacedb:
     restart: unless-stopped
     container_name: dspacedb
-    # Uses a custom Postgres image with pgcrypto installed
-    image: "${DOCKER_OWNER:-dspace}/dspace-postgres-pgcrypto:${DSPACE_VER:-dspace-7_x}"
-    build:
-      # Must build out of subdirectory to have access to install script for pgcrypto
-      context: ./dspace/src/main/docker/dspace-postgres-pgcrypto/
+    image: postgres:13
     environment:
       PGDATA: /pgdata
-      POSTGRES_PASSWORD: dspace
+      POSTGRES_ADMIN_USER: postgres
+      POSTGRES_ADMIN_PASSWORD: postgres
+      POSTGRES_PASSWORD: postgres
     networks:
       dspacenet:
     ports:
@@ -115,7 +121,7 @@ services:
     working_dir: /var/solr/data
     volumes:
     # Keep Solr data directory between reboots
-      - "./solr_data:/var/solr/data:rw"
+      - ./solrData:/var/solr/data
     # Initialize all DSpace Solr cores then start Solr:
     # * First, run precreate-core to create the core (if it doesn't yet exist). If exists already, this is a no-op
     # * Second, copy configsets to this core:
@@ -154,7 +160,3 @@ services:
       - '-c'
       - |
         npm run start:dev
-volumes:
-  assetstore:
-  pgdata:
-  solr_data:
