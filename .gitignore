@@ -47,3 +47,14 @@ rebel.xml
 
 ## Ignore jenv configuration
 .java-version
+
+# Data
+pgdata
+solrData
+assetstore
+DSPACE_BACKUP.sh
+IMPORT_DSPACE_DB.sh
+dspace_logs
+DB_MIGRATE.sh
+upgrade_notes.sh
+db_backup
