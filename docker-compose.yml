@@ -76,9 +76,9 @@ services:
     tty: true
     volumes:
       # Keep DSpace assetstore directory between reboots
-      - ./assetstore:/dspace/assetstore
-      - ./dspace_logs/dspace:/dspace/log/:rw
-      - ./dspace_logs/tomcat:/usr/local/tomcat/logs/:rw
+      - ./data/assetstore:/dspace/assetstore
+      - ./data/dspace_logs/dspace:/dspace/log/:rw
+      - ./data/dspace_logs/tomcat:/usr/local/tomcat/logs/:rw
   # DSpace PostgreSQL database container
   dspacedb:
     restart: unless-stopped
@@ -98,7 +98,7 @@ services:
     tty: true
     volumes:
       # Keep Postgres data directory between reboots
-      - ./pgdata:/pgdata
+      - ./data/pgdata:/pgdata
   # DSpace Solr container
   dspacesolr:
     restart: unless-stopped
@@ -119,9 +119,9 @@ services:
     stdin_open: true
     tty: true
     working_dir: /var/solr/data
-    volumes:
+#    volumes:
     # Keep Solr data directory between reboots
-      - ./solrData:/var/solr/data
+#      - ./data/solrData:/var/solr/data
     # Initialize all DSpace Solr cores then start Solr:
     # * First, run precreate-core to create the core (if it doesn't yet exist). If exists already, this is a no-op
     # * Second, copy configsets to this core:
@@ -150,7 +150,7 @@ services:
     image: "${DOCKER_OWNER:-dspace}/dspace-statistics:${DSPACE_VER:-dspace-7_x}"
     build:
       context: .
-      dockerfile: ./dspace/src/main/docker/dspace-statistics-api/Dockerfile
+      dockerfile: ./dspace-statistics-api/Dockerfile
     networks:
       dspacenet:
     ports:
