@@ -17,4 +17,3 @@ docker-compose.yml
 data/
 DSPACE_BACKUP.sh
 IMPORT_DSPACE_DB.sh
-dspace-statistics-api-js/
