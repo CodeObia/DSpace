@@ -6,6 +6,7 @@
 __Note: For each statistics core an export and import line should be added__
 
 - Comment the Solr volume line in docker-compose.yml
+- Create [GeoIP.conf](https://www.maxmind.com/en/accounts/current/license-key/GeoIP.conf) in directory `custom_configuration/config`
 - Add handle-server directory for the installation into the relevant directory e.g. `custom_configuration/themes/MELSpace/`
 - Clone Statistics
 ```shell
