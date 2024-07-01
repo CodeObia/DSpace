@@ -6,7 +6,6 @@
 __Note: For each statistics core an export and import line should be added__
 
 - Comment the Solr volume line in docker-compose.yml
-- Download `GeoLite2-City` into the directory `custom_configuration`
 - Add handle-server directory for the installation into the relevant directory e.g. `custom_configuration/themes/MELSpace/`
 - Clone Statistics
 ```shell

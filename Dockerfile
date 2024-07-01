@@ -117,12 +117,13 @@ RUN apt-get update \
     cron \
     less \
     vim \
+    geoipupdate \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get -y autoremove
 
 WORKDIR "$DSPACE_HOME"
 
-COPY custom_configuration/GeoLite2-City/GeoLite2-City.mmdb "$DSPACE_HOME"/config/
+COPY custom_configuration/config/GeoIP.conf /etc/GeoIP.conf
 
 RUN apt-get update \
     && apt-get install -y \
@@ -131,7 +132,13 @@ RUN apt-get update \
     && apt-get -y autoremove
 # Change to dspace user for for adding cron jobs
 USER dspace
-RUN (crontab -l 2>/dev/null; echo '# Compress DSpace logs (checker.log, cocoon.log, handle-plugin.log and solr.log) older than yesterday') | crontab - \
+
+# Get GeoLite2-City.mmdb
+RUN /usr/bin/geoipupdate -d /dspace/config/
+
+RUN (crontab -l 2>/dev/null; echo '# Update GeoLite2-City') | crontab - \
+    && (crontab -l 2>/dev/null; echo '00 00 * * 1,3 /usr/bin/geoipupdate -d /dspace/config/ >> '$DSPACE_HOME'/log/cron_tab_logs.log 2>&1') | crontab - \
+    && (crontab -l 2>/dev/null; echo '# Compress DSpace logs (checker.log, cocoon.log, handle-plugin.log and solr.log) older than yesterday') | crontab - \
     && (crontab -l 2>/dev/null; echo '20 0 * * * find '$DSPACE_HOME'/log -regextype posix-extended -iregex ".*\.log.*" ! -iregex ".*dspace\.log.*" ! -iregex ".*\.xz" ! -newermt "Yesterday" -exec schedtool -B -e ionice -c2 -n7 xz {} \; >> '$DSPACE_HOME'/log/cron_tab_logs.log 2>&1') | crontab - \
     && (crontab -l 2>/dev/null; echo '# Compress DSpace logs (dspace.log) older than 1 week') | crontab - \
     && (crontab -l 2>/dev/null; echo '25 0 * * * find '$DSPACE_HOME'/log -regextype posix-extended -iregex ".*dspace\.log.*" ! -iregex ".*\.xz" ! -newermt "1 week ago" -exec schedtool -B -e ionice -c2 -n7 xz {} \; >> '$DSPACE_HOME'/log/cron_tab_logs.log 2>&1') | crontab - \
