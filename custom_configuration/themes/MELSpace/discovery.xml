@@ -175,6 +175,10 @@
                 <ref bean="searchFilterCrp"/>
                 <ref bean="searchFilterYear"/>
                 <ref bean="searchFilterProject"/>
+<!--                <ref bean="searchFilterAccessStatus"/>-->
+<!--                <ref bean="searchFilterFunder"/>-->
+<!--                <ref bean="searchFilterPublisher"/>-->
+<!--                <ref bean="searchFilterSdg"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -194,6 +198,10 @@
                 <ref bean="searchFilterCrp"/>
                 <ref bean="searchFilterYear"/>
                 <ref bean="searchFilterProject"/>
+                <ref bean="searchFilterAccessStatus"/>
+                <ref bean="searchFilterFunder"/>
+                <ref bean="searchFilterPublisher"/>
+                <ref bean="searchFilterSdg"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -454,6 +462,10 @@
                         <value>cg.contributor.crp</value>
                         <value>mel.date.year</value>
                         <value>cg.contributor.project</value>
+                        <value>dc.identifier.status</value>
+                        <value>cg.contributor.funder</value>
+                        <value>dc.publisher</value>
+                        <value>cg.subject.sdg</value>
                     </list>
                 </property>
                 <!--The minimum number of matching terms across the metadata fields above before an item is found as related -->
@@ -487,6 +499,10 @@
                 <ref bean="searchFilterCrp"/>
                 <ref bean="searchFilterYear"/>
                 <ref bean="searchFilterProject"/>
+<!--                <ref bean="searchFilterAccessStatus"/>-->
+<!--                <ref bean="searchFilterFunder"/>-->
+<!--                <ref bean="searchFilterPublisher"/>-->
+<!--                <ref bean="searchFilterSdg"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -506,6 +522,10 @@
                 <ref bean="searchFilterCrp"/>
                 <ref bean="searchFilterYear"/>
                 <ref bean="searchFilterProject"/>
+                <ref bean="searchFilterAccessStatus"/>
+                <ref bean="searchFilterFunder"/>
+                <ref bean="searchFilterPublisher"/>
+                <ref bean="searchFilterSdg"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -2468,6 +2488,50 @@
         <property name="metadataFields">
             <list>
                 <value>cg.contributor.project</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterAccessStatus" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="accessStatus"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.identifier.status</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterFunder" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="funder"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.contributor.funder</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterPublisher" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="publisher"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.publisher</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterSdg" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="sdg"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.subject.sdg</value>
             </list>
         </property>
         <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
