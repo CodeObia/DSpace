@@ -146,7 +146,7 @@ services:
     image: "${DOCKER_OWNER:-dspace}/dspace-statistics:${DSPACE_VER:-dspace-7_x}"
     build:
       context: .
-      dockerfile: ./dspace-statistics-api/Dockerfile
+      dockerfile: ./dspace-statistics-api-js/Dockerfile
     networks:
       dspacenet:
     ports:
