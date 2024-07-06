@@ -34,14 +34,11 @@ RUN useradd -r -s /bin/bash -m -d "$DSPACE_HOME" dspace
 # copy source to $WORKDIR/dspace
 COPY --chown=dspace:dspace . dspace/
 
-# Change to dspace user for build and install
-USER dspace
-
 # Copy customized DSpace local.cfg
-COPY --chown=dspace:dspace custom_configuration/config/local.cfg dspace/config/
+COPY --chown=dspace:dspace custom_configuration/config/local.cfg dspace/dspace/config/
 
 # Copy customized default license
-COPY --chown=dspace:dspace custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THEME/default.license dspace/config/
+COPY --chown=dspace:dspace custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THEME/default.license dspace/dspace/config/
 
 WORKDIR /tmp
 
