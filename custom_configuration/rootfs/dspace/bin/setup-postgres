@@ -17,7 +17,6 @@ if [[ -z $POSTGRES_DB_HOST && -z $POSTGRES_DB_PORT ]]; then
   exit 1
 fi
 
-DSPACE_CFG=/dspace/config/local.cfg
 if [[ -n $POSTGRES_ADMIN_PASSWORD ]]; then
   export PGPASSWORD=$POSTGRES_ADMIN_PASSWORD
 fi
@@ -47,11 +46,32 @@ psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$PO
 # Grant rights to call functions in the extensions schema to your dspace user
 psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_ADMIN_USER" -c "GRANT USAGE ON SCHEMA extensions TO $POSTGRES_USER;" 2>&1 > /dev/null
 
-# Configure database in local.cfg
-sed -i "s,^db.url = jdbc:postgresql://localhost:5432/dspace$,db.url = jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_SCHEMA}," ${DSPACE_CFG}
-sed -i "s,^db.username = dspace$,db.username = ${POSTGRES_USER}," ${DSPACE_CFG}
-sed -i "s,^db.password = dspace$,db.password = ${POSTGRES_PASSWORD}," ${DSPACE_CFG}
-echo "DSpace configuration changed"
+# Add docker compose dspace config variables to local.cfg
+DSPACE_CFG=/dspace/config/local.cfg
+if grep -q '####DOCKER_COMPOSE_VARIABLES_ADDED####' "$DSPACE_CFG"; then
+  echo 'Configs are good!'
+else
+  echo "" >> "$DSPACE_CFG"
+  echo "####DOCKER_COMPOSE_VARIABLES_ADDED####" >> "$DSPACE_CFG"
+  for config_variable in $(env); do
+    if [[ $config_variable == *"__P__"* || $config_variable == *"__D__"* || $config_variable == "POSTGRES_USER="* || $config_variable == "POSTGRES_PASSWORD="* ]]; then
+      name=$(cut -d "=" -f1 <<< "$config_variable")
+      name="${name//__P__/.}"
+      name="${name//__D__/-}"
+      value=$(cut -d "=" -f2- <<< "$config_variable")
+      config_variable="$name = $value"
+      echo "$config_variable" >> "$DSPACE_CFG"
+    elif [[ $config_variable == "POSTGRES_USER="* ]]; then
+      value=$(cut -d "=" -f2- <<< "$config_variable")
+      config_variable="db.username = $value"
+      echo "$config_variable" >> "$DSPACE_CFG"
+    elif [[ $config_variable == "POSTGRES_PASSWORD="* ]]; then
+      value=$(cut -d "=" -f2- <<< "$config_variable")
+      config_variable="db.password = $value"
+      echo "$config_variable" >> "$DSPACE_CFG"
+    fi
+  done
+fi
 
 # Create DSpace administrator (with su -p to preserve environment variables like PATH)
 su -p dspace -c "export PATH=$PATH && $DSPACE_HOME/bin/dspace create-administrator -e ${ADMIN_EMAIL:-devops@1science.com} -f ${ADMIN_FIRSTNAME:-DSpace} -l ${ADMIN_LASTNAME:-Admin} -p ${ADMIN_PASSWD:-admin123} -c ${ADMIN_LANGUAGE:-en}"
