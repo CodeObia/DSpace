@@ -42,9 +42,11 @@ services:
       proxies__P__trusted__P__ipranges: '172.24.0'
       handle__P__prefix: 123456789
       LOGGING_CONFIG: /dspace/config/log4j2-container.xml
-      webui__P__itemlist__P__sort___D___option__P__2: dateissued:dcterms.available:date
+      webui__P__itemlist__P__sort__D__option__P__2: dateissued:dcterms.available:date
+      webui__P__itemlist__P__sort__D__option__P__4: type:dc.type:text
       webui__P__feed__P__item__P__date: dateissued:dcterms.available:date
       xmlui__P__google__P__analytics__P__key: ''
+      webui__P__browse__P__vocabularies__P__disabled: srsc
       mail__P__server: ''
       mail__P__server__P__username: ''
       mail__P__server__P__password: ''
@@ -145,8 +147,7 @@ services:
     container_name: dspacestatistics
     image: "${DOCKER_OWNER:-dspace}/dspace-statistics:${DSPACE_VER:-dspace-7_x}"
     build:
-      context: .
-      dockerfile: ./dspace-statistics-api-js/Dockerfile
+      context: ./dspace-statistics-api-js
     networks:
       dspacenet:
     ports:
