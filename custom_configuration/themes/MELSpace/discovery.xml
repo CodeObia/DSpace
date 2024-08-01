@@ -173,12 +173,15 @@
                 <ref bean="searchFilterRegion"/>
                 <ref bean="searchFilterCountry"/>
                 <ref bean="searchFilterCrp"/>
+                <ref bean="searchFilterSdg"/>
+                <ref bean="searchFilterInitiative"/>
+                <ref bean="searchFilterActionArea"/>
+                <ref bean="searchFilterImpactArea"/>
                 <ref bean="searchFilterYear"/>
                 <ref bean="searchFilterProject"/>
 <!--                <ref bean="searchFilterAccessStatus"/>-->
 <!--                <ref bean="searchFilterFunder"/>-->
 <!--                <ref bean="searchFilterPublisher"/>-->
-<!--                <ref bean="searchFilterSdg"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -196,12 +199,15 @@
                 <ref bean="searchFilterRegion"/>
                 <ref bean="searchFilterCountry"/>
                 <ref bean="searchFilterCrp"/>
+                <ref bean="searchFilterSdg"/>
+                <ref bean="searchFilterInitiative"/>
+                <ref bean="searchFilterActionArea"/>
+                <ref bean="searchFilterImpactArea"/>
                 <ref bean="searchFilterYear"/>
                 <ref bean="searchFilterProject"/>
                 <ref bean="searchFilterAccessStatus"/>
                 <ref bean="searchFilterFunder"/>
                 <ref bean="searchFilterPublisher"/>
-                <ref bean="searchFilterSdg"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -466,12 +472,15 @@
                         <value>cg.coverage.region</value>
                         <value>mel.ISO3166/MA</value>
                         <value>cg.contributor.crp</value>
+                        <value>cg.subject.sdg</value>
+                        <value>cg.contributor.initiative</value>
+                        <value>cg.subject.actionArea</value>
+                        <value>cg.subject.impactArea</value>
                         <value>mel.date.year</value>
                         <value>cg.contributor.project</value>
                         <value>dc.identifier.status</value>
                         <value>cg.contributor.funder</value>
                         <value>dc.publisher</value>
-                        <value>cg.subject.sdg</value>
                     </list>
                 </property>
                 <!--The minimum number of matching terms across the metadata fields above before an item is found as related -->
@@ -503,12 +512,15 @@
                 <ref bean="searchFilterRegion"/>
                 <ref bean="searchFilterCountry"/>
                 <ref bean="searchFilterCrp"/>
+                <ref bean="searchFilterSdg"/>
+                <ref bean="searchFilterInitiative"/>
+                <ref bean="searchFilterActionArea"/>
+                <ref bean="searchFilterImpactArea"/>
                 <ref bean="searchFilterYear"/>
                 <ref bean="searchFilterProject"/>
 <!--                <ref bean="searchFilterAccessStatus"/>-->
 <!--                <ref bean="searchFilterFunder"/>-->
 <!--                <ref bean="searchFilterPublisher"/>-->
-<!--                <ref bean="searchFilterSdg"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -526,12 +538,15 @@
                 <ref bean="searchFilterRegion"/>
                 <ref bean="searchFilterCountry"/>
                 <ref bean="searchFilterCrp"/>
+                <ref bean="searchFilterSdg"/>
+                <ref bean="searchFilterInitiative"/>
+                <ref bean="searchFilterActionArea"/>
+                <ref bean="searchFilterImpactArea"/>
                 <ref bean="searchFilterYear"/>
                 <ref bean="searchFilterProject"/>
                 <ref bean="searchFilterAccessStatus"/>
                 <ref bean="searchFilterFunder"/>
                 <ref bean="searchFilterPublisher"/>
-                <ref bean="searchFilterSdg"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -2581,6 +2596,39 @@
         <property name="metadataFields">
             <list>
                 <value>cg.subject.sdg</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterInitiative" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="initiative"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.contributor.initiative</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterActionArea" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="action_area"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.subject.actionArea</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterImpactArea" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="impact_area"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.subject.impactArea</value>
             </list>
         </property>
         <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
