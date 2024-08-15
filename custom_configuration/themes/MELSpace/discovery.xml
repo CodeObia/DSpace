@@ -177,11 +177,13 @@
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
-                <ref bean="searchFilterYear"/>
+<!--                <ref bean="searchFilterYear"/>-->
                 <ref bean="searchFilterProject"/>
 <!--                <ref bean="searchFilterAccessStatus"/>-->
 <!--                <ref bean="searchFilterFunder"/>-->
 <!--                <ref bean="searchFilterPublisher"/>-->
+<!--                <ref bean="searchFilterIsi"/>-->
+<!--                <ref bean="searchFilterAgrovocKeywords"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -203,11 +205,13 @@
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
-                <ref bean="searchFilterYear"/>
+<!--                <ref bean="searchFilterYear"/>-->
                 <ref bean="searchFilterProject"/>
                 <ref bean="searchFilterAccessStatus"/>
                 <ref bean="searchFilterFunder"/>
                 <ref bean="searchFilterPublisher"/>
+                <ref bean="searchFilterIsi"/>
+                <ref bean="searchFilterAgrovocKeywords"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -516,11 +520,13 @@
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
-                <ref bean="searchFilterYear"/>
+<!--                <ref bean="searchFilterYear"/>-->
                 <ref bean="searchFilterProject"/>
 <!--                <ref bean="searchFilterAccessStatus"/>-->
 <!--                <ref bean="searchFilterFunder"/>-->
 <!--                <ref bean="searchFilterPublisher"/>-->
+<!--                <ref bean="searchFilterIsi"/>-->
+<!--                <ref bean="searchFilterAgrovocKeywords"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -542,11 +548,13 @@
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
-                <ref bean="searchFilterYear"/>
+<!--                <ref bean="searchFilterYear"/>-->
                 <ref bean="searchFilterProject"/>
                 <ref bean="searchFilterAccessStatus"/>
                 <ref bean="searchFilterFunder"/>
                 <ref bean="searchFilterPublisher"/>
+                <ref bean="searchFilterIsi"/>
+                <ref bean="searchFilterAgrovocKeywords"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -2629,6 +2637,28 @@
         <property name="metadataFields">
             <list>
                 <value>cg.subject.impactArea</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterIsi" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="isiJournal"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.isijournal</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterAgrovocKeywords" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="agrovocKeywords"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.subject.agrovoc</value>
             </list>
         </property>
         <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
