@@ -184,6 +184,7 @@
 <!--                <ref bean="searchFilterPublisher"/>-->
 <!--                <ref bean="searchFilterIsi"/>-->
 <!--                <ref bean="searchFilterAgrovocKeywords"/>-->
+<!--                <ref bean="searchFilterLanguage"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -212,6 +213,7 @@
                 <ref bean="searchFilterPublisher"/>
                 <ref bean="searchFilterIsi"/>
                 <ref bean="searchFilterAgrovocKeywords"/>
+                <ref bean="searchFilterLanguage"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -527,6 +529,7 @@
 <!--                <ref bean="searchFilterPublisher"/>-->
 <!--                <ref bean="searchFilterIsi"/>-->
 <!--                <ref bean="searchFilterAgrovocKeywords"/>-->
+<!--                <ref bean="searchFilterLanguage"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -555,6 +558,7 @@
                 <ref bean="searchFilterPublisher"/>
                 <ref bean="searchFilterIsi"/>
                 <ref bean="searchFilterAgrovocKeywords"/>
+                <ref bean="searchFilterLanguage"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -2659,6 +2663,17 @@
         <property name="metadataFields">
             <list>
                 <value>cg.subject.agrovoc</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterLanguage" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="language"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.language</value>
             </list>
         </property>
         <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
