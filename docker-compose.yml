@@ -59,6 +59,10 @@ services:
       mail__P__registration__P__notify: ''
       request__P__item__P__helpdesk__P__override: 'false'
       CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT: 10
+      webui__P__browse__P__index__P__1: 'dateissued:item:dateissued'
+      webui__P__browse__P__index__P__2: 'author:metadata:dc.contributor.*\,dc.creator:text'
+      webui__P__browse__P__index__P__3: 'title:item:title'
+      webui__P__browse__P__index__P__4: 'subject:metadata:dc.subject.*:text'
     image: "${DOCKER_OWNER:-dspace}/dspace:${DSPACE_VER:-dspace-7_x}"
     build:
       context: .
