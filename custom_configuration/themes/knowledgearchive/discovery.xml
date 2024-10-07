@@ -169,11 +169,18 @@
                 <ref bean="searchFilterEntityType"/>
                 <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#-->
                 <ref bean="searchFilterType" />
-                <ref bean="searchFilterCrp"/>
-                <ref bean="searchFilterInitiative"/>
-                <ref bean="searchFilterCountry"/>
+                <ref bean="searchFilterInstitute"/>
                 <ref bean="searchFilterRegion"/>
+                <ref bean="searchFilterCountry"/>
+                <ref bean="searchFilterCrp"/>
+                <ref bean="searchFilterSdg"/>
+                <ref bean="searchFilterInitiative"/>
+                <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
+<!--                <ref bean="searchFilterAccessStatus"/>-->
+<!--                <ref bean="searchFilterIsi"/>-->
+<!--                <ref bean="searchFilterAgrovocKeywords"/>-->
+<!--                <ref bean="searchFilterLanguage"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -187,11 +194,18 @@
                 <ref bean="searchFilterIssued" />
                 <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#-->
                 <ref bean="searchFilterType" />
-                <ref bean="searchFilterCrp"/>
-                <ref bean="searchFilterInitiative"/>
-                <ref bean="searchFilterCountry"/>
+                <ref bean="searchFilterInstitute"/>
                 <ref bean="searchFilterRegion"/>
+                <ref bean="searchFilterCountry"/>
+                <ref bean="searchFilterCrp"/>
+                <ref bean="searchFilterSdg"/>
+                <ref bean="searchFilterInitiative"/>
+                <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
+                <ref bean="searchFilterAccessStatus"/>
+                <ref bean="searchFilterIsi"/>
+                <ref bean="searchFilterAgrovocKeywords"/>
+                <ref bean="searchFilterLanguage"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -210,8 +224,11 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -358,8 +375,11 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -445,12 +465,16 @@
                         <value>dc.subject</value>
                         <!--#CONFIG_SPRING_API_DISCOVERY_SIMILARITY_METADATA_ADDITIONAL#-->
                         <value>dc.contributor</value>
-                        <value>cg.contributor.crp</value>
-                        <value>cg.contributor.initiative</value>
                         <value>dc.type</value>
-                        <value>cg.coverage.country</value>
+                        <value>cg.contributor.affiliation</value>
                         <value>cg.coverage.region</value>
+                        <value>cg.coverage.country</value>
+                        <value>cg.contributor.crp</value>
+                        <value>cg.subject.sdg</value>
+                        <value>cg.contributor.initiative</value>
+                        <value>cg.subject.actionArea</value>
                         <value>cg.subject.impactArea</value>
+                        <value>cg.identifier.status</value>
                     </list>
                 </property>
                 <!--The minimum number of matching terms across the metadata fields above before an item is found as related -->
@@ -478,11 +502,18 @@
                 <ref bean="searchFilterEntityType"/>
                 <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#-->
                 <ref bean="searchFilterType" />
-                <ref bean="searchFilterCrp"/>
-                <ref bean="searchFilterInitiative"/>
-                <ref bean="searchFilterCountry"/>
+                <ref bean="searchFilterInstitute"/>
                 <ref bean="searchFilterRegion"/>
+                <ref bean="searchFilterCountry"/>
+                <ref bean="searchFilterCrp"/>
+                <ref bean="searchFilterSdg"/>
+                <ref bean="searchFilterInitiative"/>
+                <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
+<!--                <ref bean="searchFilterAccessStatus"/>-->
+<!--                <ref bean="searchFilterIsi"/>-->
+<!--                <ref bean="searchFilterAgrovocKeywords"/>-->
+<!--                <ref bean="searchFilterLanguage"/>-->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -496,11 +527,18 @@
                 <ref bean="searchFilterIssued" />
                 <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_ADDITIONAL#-->
                 <ref bean="searchFilterType" />
-                <ref bean="searchFilterCrp"/>
-                <ref bean="searchFilterInitiative"/>
-                <ref bean="searchFilterCountry"/>
+                <ref bean="searchFilterInstitute"/>
                 <ref bean="searchFilterRegion"/>
+                <ref bean="searchFilterCountry"/>
+                <ref bean="searchFilterCrp"/>
+                <ref bean="searchFilterSdg"/>
+                <ref bean="searchFilterInitiative"/>
+                <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
+                <ref bean="searchFilterAccessStatus"/>
+                <ref bean="searchFilterIsi"/>
+                <ref bean="searchFilterAgrovocKeywords"/>
+                <ref bean="searchFilterLanguage"/>
 <!--                <ref bean="searchFilterContentInOriginalBundle"/>-->
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />
@@ -519,8 +557,11 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -661,8 +702,11 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -790,7 +834,9 @@
                         <ref bean="sortLastModified" />
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                     </list>
                 </property>
             </bean>
@@ -864,7 +910,9 @@
                 <property name="sortFields">
                     <list>
                         <ref bean="sortLastModified" />
-                        <ref bean="sortTitleAsc" />
+                        <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
+                        <ref bean="sortDateIssued" />
                         <ref bean="sortDateIssuedDesc" />
                     </list>
                 </property>
@@ -941,7 +989,9 @@
                         <ref bean="sortLastModified" />
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                     </list>
                 </property>
             </bean>
@@ -1016,7 +1066,9 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                     </list>
                 </property>
             </bean>
@@ -1091,7 +1143,9 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                     </list>
                 </property>
             </bean>
@@ -1175,8 +1229,11 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1245,8 +1302,11 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
+                        <ref bean="sortTitleDesc" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateIssuedDesc" />
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1310,6 +1370,7 @@
                         <ref bean="sortGivenName"/>
                         <ref bean="sortBirthDate"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1372,6 +1433,7 @@
                         <ref bean="sortGivenName"/>
                         <ref bean="sortBirthDate"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1427,6 +1489,7 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1481,6 +1544,7 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1545,6 +1609,7 @@
                         <ref bean="sortOrganizationAddressLocality"/>
                         <ref bean="sortOrganizationFoundingDate"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1609,6 +1674,7 @@
                         <ref bean="sortOrganizationAddressLocality"/>
                         <ref bean="sortOrganizationFoundingDate"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1668,8 +1734,10 @@
                         <ref bean="sortScore" />
                         <ref bean="sortPublicationIssueNumber"/>
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                         <ref bean="sortCreativeWorkDatePublished"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1728,8 +1796,10 @@
                         <ref bean="sortScore" />
                         <ref bean="sortPublicationIssueNumber"/>
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                         <ref bean="sortCreativeWorkDatePublished"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1788,8 +1858,10 @@
                         <ref bean="sortScore" />
                         <ref bean="sortPublicationVolumeNumber"/>
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                         <ref bean="sortCreativeWorkDatePublished"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1847,8 +1919,10 @@
                         <ref bean="sortScore" />
                         <ref bean="sortPublicationVolumeNumber"/>
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                         <ref bean="sortCreativeWorkDatePublished"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1907,8 +1981,10 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                         <ref bean="sortCreativeWorkDatePublished"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -1966,8 +2042,10 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                         <ref bean="sortCreativeWorkDatePublished"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -2040,6 +2118,7 @@
                         <ref bean="sortOrganizationAddressLocality"/>
                         <ref bean="sortOrganizationFoundingDate"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                         <ref bean="sortFamilyName"/>
                         <ref bean="sortGivenName"/>
                         <ref bean="sortBirthDate"/>
@@ -2099,6 +2178,7 @@
                         <ref bean="sortOrganizationAddressLocality"/>
                         <ref bean="sortOrganizationFoundingDate"/>
                         <ref bean="sortDateAccessioned"/>
+                        <ref bean="sortDateAccessionedDesc"/>
                     </list>
                 </property>
             </bean>
@@ -2135,6 +2215,7 @@
                 <property name="sortFields">
                     <list>
                         <ref bean="sortTitle"/>
+                        <ref bean="sortTitleDesc"/>
                     </list>
                 </property>
             </bean>
@@ -2404,33 +2485,11 @@
     </bean>
 
     <!--#CONFIG_SPRING_API_DISCOVERY_SIDEBAR_SEARCH_DETAILS_ADDITIONAL#-->
-    <bean id="searchFilterCrp" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
-        <property name="indexFieldName" value="crp"/>
+    <bean id="searchFilterInstitute" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="institute"/>
         <property name="metadataFields">
             <list>
-                <value>cg.contributor.crp</value>
-            </list>
-        </property>
-        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
-        <property name="sortOrderSidebar" value="COUNT"/>
-    </bean>
-
-    <bean id="searchFilterInitiative" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
-        <property name="indexFieldName" value="initiative"/>
-        <property name="metadataFields">
-            <list>
-                <value>cg.contributor.initiative</value>
-            </list>
-        </property>
-        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
-        <property name="sortOrderSidebar" value="COUNT"/>
-    </bean>
-
-    <bean id="searchFilterCountry" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
-        <property name="indexFieldName" value="country"/>
-        <property name="metadataFields">
-            <list>
-                <value>cg.coverage.country</value>
+                <value>cg.contributor.affiliation</value>
             </list>
         </property>
         <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
@@ -2448,11 +2507,110 @@
         <property name="sortOrderSidebar" value="COUNT"/>
     </bean>
 
+    <bean id="searchFilterCountry" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="country"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.coverage.country</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterCrp" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="crp"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.contributor.crp</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterAccessStatus" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="accessStatus"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.identifier.status</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterSdg" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="sdg"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.subject.sdg</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterInitiative" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="initiative"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.contributor.initiative</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterActionArea" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="action_area"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.subject.actionArea</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
     <bean id="searchFilterImpactArea" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="impact_area"/>
         <property name="metadataFields">
             <list>
                 <value>cg.subject.impactArea</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterIsi" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="isiJournal"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.identifier.ISIindexed</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterAgrovocKeywords" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="agrovocKeywords"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.subject.agrovoc</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterLanguage" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="language"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.language</value>
             </list>
         </property>
         <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
@@ -2952,12 +3110,28 @@
         <property name="defaultSortOrder" value="asc"/>
     </bean>
 
+    <bean id="sortTitleDesc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="dc.title"/>
+        <property name="defaultSortOrder" value="desc"/>
+    </bean>
+
     <bean id="sortDateIssued" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="dc.date.issued"/>
+        <property name="type" value="date"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+
+    <bean id="sortDateIssuedDesc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
         <property name="metadataField" value="dc.date.issued"/>
         <property name="type" value="date"/>
         <property name="defaultSortOrder" value="desc"/>
     </bean>
     <bean id="sortDateAccessioned" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="dc.date.accessioned"/>
+        <property name="type" value="date"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+    <bean id="sortDateAccessionedDesc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
         <property name="metadataField" value="dc.date.accessioned"/>
         <property name="type" value="date"/>
         <property name="defaultSortOrder" value="desc"/>
@@ -3021,16 +3195,4 @@
         <property name="type" value="date" />
         <property name="defaultSortOrder" value="desc"/>
     </bean>
-
-    <bean id="sortTitleAsc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
-        <property name="metadataField" value="dc.title"/>
-        <property name="defaultSortOrder" value="asc"/>
-    </bean>
-
-    <bean id="sortDateIssuedDesc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
-        <property name="metadataField" value="dc.date.issued"/>
-        <property name="type" value="date"/>
-        <property name="defaultSortOrder" value="desc"/>
-    </bean>
-
 </beans>
