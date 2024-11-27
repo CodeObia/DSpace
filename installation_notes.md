@@ -8,6 +8,7 @@ __Note: For each statistics core an export and import line should be added__
 - Comment the Solr volume line in docker-compose.yml
 - Create [GeoIP.conf](https://www.maxmind.com/en/accounts/current/license-key/GeoIP.conf) in directory `custom_configuration/config`
 - Add handle-server directory for the installation into the relevant directory e.g. `custom_configuration/themes/MELSpace/`
+- [Update Handle Server Configuration](https://wiki.lyrasis.org/display/DSDOC7x/Upgrading+DSpace#:~:text=Update%20Handle%20Server%20Configuration)
 - Clone Statistics
 ```shell
 git clone --single-branch --branch dspace-7_x https://github.com/codeobia/dspace-statistics-api-js.git
@@ -27,8 +28,8 @@ sh upgrade_notes.sh dspace dspacesolr
 SOLR_USER=$(docker exec dspacesolr bash -c 'id $(whoami)' | grep -oP 'uid\=[0-9]+' | grep -oP '[0-9]+') \
 && SOLR_GROUP=$(docker exec dspacesolr bash -c 'id $(whoami)' | grep -oP 'gid\=[0-9]+' | grep -oP '[0-9]+') \
 && docker stop dspacesolr \
-&& docker cp dspacesolr:/var/solr/data solrData && \
-sudo chown -R "$SOLR_USER":"$SOLR_GROUP" solrData
+&& docker cp dspacesolr:/var/solr/data data/solrData && \
+sudo chown -R "$SOLR_USER":"$SOLR_GROUP" data/solrData
 ```
 - Put back the Solr volume line in docker-compose.yml
 - Re-create solr container 

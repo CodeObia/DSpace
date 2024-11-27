@@ -78,6 +78,8 @@ services:
         target: 8009
       - published: 8000
         target: 8000
+      - published: 2641
+        target: 2641
     stdin_open: true
     tty: true
     volumes:
@@ -132,6 +134,8 @@ services:
     # * First, run precreate-core to create the core (if it doesn't yet exist). If exists already, this is a no-op
     # * Second, copy configsets to this core:
     #   Updates to Solr configs require the container to be rebuilt/restarted: `docker compose -p d7 up -d --build dspacesolr`
+    environment:
+      SOLR_JAVA_MEM: "-Xms1g -Xmx1g"
     entrypoint:
       - /bin/bash
       - '-c'
