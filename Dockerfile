@@ -125,6 +125,7 @@ COPY custom_configuration/config/GeoIP.conf /etc/GeoIP.conf
 RUN apt-get update \
     && apt-get install -y \
     schedtool \
+    xz-utils \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get -y autoremove
 # Change to dspace user for for adding cron jobs
