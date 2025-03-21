@@ -46,6 +46,7 @@ services:
       webui__P__itemlist__P__sort__D__option__P__4: type:dc.type:text
       webui__P__feed__P__item__P__date: dateissued:dcterms.available:date
       xmlui__P__google__P__analytics__P__key: ''
+      google__P__analytics__P__key: ''
       webui__P__browse__P__vocabularies__P__disabled: srsc
       mail__P__server: ''
       mail__P__server__P__username: ''
