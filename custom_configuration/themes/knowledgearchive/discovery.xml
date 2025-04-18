@@ -177,6 +177,7 @@
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
+                <ref bean="searchFilterProject"/>
 <!--                <ref bean="searchFilterAccessStatus"/>-->
 <!--                <ref bean="searchFilterIsi"/>-->
 <!--                <ref bean="searchFilterAgrovocKeywords"/>-->
@@ -202,6 +203,7 @@
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
+                <ref bean="searchFilterProject"/>
                 <ref bean="searchFilterAccessStatus"/>
                 <ref bean="searchFilterIsi"/>
                 <ref bean="searchFilterAgrovocKeywords"/>
@@ -474,6 +476,7 @@
                         <value>cg.contributor.initiative</value>
                         <value>cg.subject.actionArea</value>
                         <value>cg.subject.impactArea</value>
+                        <value>cg.contributor.project</value>
                         <value>cg.identifier.status</value>
                     </list>
                 </property>
@@ -510,6 +513,7 @@
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
+                <ref bean="searchFilterProject"/>
 <!--                <ref bean="searchFilterAccessStatus"/>-->
 <!--                <ref bean="searchFilterIsi"/>-->
 <!--                <ref bean="searchFilterAgrovocKeywords"/>-->
@@ -535,6 +539,7 @@
                 <ref bean="searchFilterInitiative"/>
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
+                <ref bean="searchFilterProject"/>
                 <ref bean="searchFilterAccessStatus"/>
                 <ref bean="searchFilterIsi"/>
                 <ref bean="searchFilterAgrovocKeywords"/>
@@ -2578,6 +2583,17 @@
         <property name="metadataFields">
             <list>
                 <value>cg.subject.impactArea</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterProject" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="project"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.contributor.project</value>
             </list>
         </property>
         <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
