@@ -17,7 +17,7 @@ git clone --single-branch --branch dspace-7_x https://github.com/codeobia/dspace
 - Adjust environment variables in docker-compose.yml
 - Run the script to migrate the DB and build the containers
 ```shell
-sh DB_MIGRATE.sh dspace7 dspace_db dspacedb
+sh DB_MIGRATE.sh dspace dspace_db dspacedb
 ```
 - Run the script to migrate Solr statistics (the script might fail, check if Solr is working on DSpace 6 or just try again)
 ```shell

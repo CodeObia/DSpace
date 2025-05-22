@@ -9,7 +9,7 @@ services:
   # DSpace (backend) webapp container
   dspace:
     restart: unless-stopped
-    container_name: dspace7
+    container_name: dspace
     environment:
       POSTGRES_DB_HOST: dspacedb
       POSTGRES_DB_PORT: 5432

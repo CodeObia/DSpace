@@ -853,17 +853,17 @@
 
         <!-- This condition determines if an Item has a "cg.contributor.center" field is ICARDA. -->
         <CustomCondition id="WorldFishContributorCondition">
-        <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
-        <Configuration>
-            <string name="field">cg.contributor.affiliation</string>
-            <string name="operator">equal</string>
-            <list name="values">
-                <string>WorldFish - WF</string>
-                <string>WorldFish</string>
-                <string>WF</string>
-            </list>
-        </Configuration>
-
+            <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
+            <Configuration>
+                <string name="field">cg.contributor.affiliation</string>
+                <string name="operator">equal</string>
+                <list name="values">
+                    <string>WorldFish - WF</string>
+                    <string>WorldFish</string>
+                    <string>WF</string>
+                </list>
+            </Configuration>
+        </CustomCondition>
     </Filters>
 
     <Sets>

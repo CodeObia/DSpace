@@ -11,12 +11,12 @@ ENV CONFIG_DSPACE_ACTIVE_THEME=MELSpace
 # Environment variables
 ENV DSPACE_HOME=/dspace
 ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
-ENV MAVEN_FLAGS="-Denforcer.skip=true -Dcheckstyle.skip=true -Dlicense.skip=true -Dxml.skip=true -Pdspace-rest"
+ENV MAVEN_FLAGS="-Denforcer.skip=true -Dcheckstyle.skip=true -Dlicense.skip=true -Dxml.skip=true"
 
-ENV MAVEN_VERSION=3.9.7
+ENV MAVEN_VERSION=3.9.9
 
 # Use ant from a tarball so we don't have to install it from apt with Java 11
-ENV ANT_VERSION=1.10.13
+ENV ANT_VERSION=1.10.15
 ENV ANT_HOME=/tmp/ant-$ANT_VERSION
 ENV PATH=$ANT_HOME/bin:$PATH
 # Install Maven and ant
@@ -69,7 +69,7 @@ RUN rm -rf /var/lib/apt/lists/* \
     && apt-get -y autoremove \
     && rm -rf "$DSPACE_HOME/.m2" /tmp/*
 
-FROM tomcat:9-jdk${JDK_VERSION}
+FROM tomcat:10-jdk${JDK_VERSION}
 # Give java extra memory (2GB)
 ENV JAVA_OPTS=-Xmx2024m
 # Set some variables for the Tomcat container. Some were already set above in
@@ -91,8 +91,7 @@ RUN rm -rf "$CATALINA_HOME/webapps"
 COPY --chown=dspace:dspace --from=build "$DSPACE_HOME" "$DSPACE_HOME"
 
 # Add webapps Tomcat's webapps directory.
-RUN mv -f "$DSPACE_HOME/webapps" "$CATALINA_HOME/" \
-    && sed -i s/CONFIDENTIAL/NONE/ "$CATALINA_HOME"/webapps/rest/WEB-INF/web.xml
+RUN mv -f "$DSPACE_HOME/webapps" "$CATALINA_HOME/"
 
 # Tweak default Tomcat server configuration
 COPY custom_configuration/config/server.xml "$CATALINA_HOME"/conf/server.xml
