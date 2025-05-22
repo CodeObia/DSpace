@@ -1,5 +1,6 @@
 networks:
   dspacenet:
+    name: dspacenet
     ipam:
       config:
         # Define a custom subnet for our DSpace network, so that we can easily trust requests from host to container.
