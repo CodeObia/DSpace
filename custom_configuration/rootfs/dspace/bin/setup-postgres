@@ -36,25 +36,31 @@ if [[ $USER_EXISTS -eq 1 ]]; then
   echo "User '${POSTGRES_USER}' created"
 fi
 
+# Switch to "dspace" user
+if [[ -n $POSTGRES_ADMIN_PASSWORD ]]; then
+  export PGPASSWORD=$POSTGRES_PASSWORD
+fi
+
 # Create a new schema in this database named "extensions" (or whatever you want to name it)
-psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_ADMIN_USER" -c "CREATE SCHEMA IF NOT EXISTS extensions;" 2>&1 > /dev/null
+psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_USER" -c "CREATE SCHEMA IF NOT EXISTS extensions;" 2>&1 > /dev/null
 # Enable this extension in this new schema
-psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_ADMIN_USER" -c "CREATE EXTENSION IF NOT EXISTS pgcrypto SCHEMA extensions;" 2>&1 > /dev/null
+psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_USER" -c "CREATE EXTENSION IF NOT EXISTS pgcrypto SCHEMA extensions;" 2>&1 > /dev/null
 # Update your database's "search_path" to also search the new "extensions" schema.
 # You are just appending it on the end of the existing comma-separated list.
-psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_ADMIN_USER" -c 'ALTER DATABASE dspace SET search_path TO "\$user",public,extensions;' 2>&1 > /dev/null
+psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_USER" -c 'ALTER DATABASE dspace SET search_path TO "\$user",public,extensions;' 2>&1 > /dev/null
 # Grant rights to call functions in the extensions schema to your dspace user
-psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_ADMIN_USER" -c "GRANT USAGE ON SCHEMA extensions TO $POSTGRES_USER;" 2>&1 > /dev/null
+psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -d ${POSTGRES_SCHEMA} -U "$POSTGRES_USER" -c "GRANT USAGE ON SCHEMA extensions TO $POSTGRES_USER;" 2>&1 > /dev/null
 
 # Add docker compose dspace config variables to local.cfg
 DSPACE_CFG=/dspace/config/local.cfg
 if grep -q '####DOCKER_COMPOSE_VARIABLES_ADDED####' "$DSPACE_CFG"; then
-  echo 'Configs are good!'
+  echo 'Configs are good...'
 else
+  echo 'Adding Configs to local.cfg...'
   echo "" >> "$DSPACE_CFG"
   echo "####DOCKER_COMPOSE_VARIABLES_ADDED####" >> "$DSPACE_CFG"
   for config_variable in $(env); do
-    if [[ $config_variable == *"__P__"* || $config_variable == *"__D__"* || $config_variable == "POSTGRES_USER="* || $config_variable == "POSTGRES_PASSWORD="* ]]; then
+    if [[ $config_variable == *"__P__"* || $config_variable == *"__D__"* ]]; then
       name=$(cut -d "=" -f1 <<< "$config_variable")
       name="${name//__P__/.}"
       name="${name//__D__/-}"
