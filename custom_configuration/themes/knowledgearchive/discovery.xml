@@ -178,6 +178,7 @@
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
                 <ref bean="searchFilterProject"/>
+                <ref bean="searchFilterScienceProgram"/>
 <!--                <ref bean="searchFilterAccessStatus"/>-->
 <!--                <ref bean="searchFilterIsi"/>-->
 <!--                <ref bean="searchFilterAgrovocKeywords"/>-->
@@ -204,6 +205,7 @@
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
                 <ref bean="searchFilterProject"/>
+                <ref bean="searchFilterScienceProgram"/>
                 <ref bean="searchFilterAccessStatus"/>
                 <ref bean="searchFilterIsi"/>
                 <ref bean="searchFilterAgrovocKeywords"/>
@@ -514,6 +516,7 @@
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
                 <ref bean="searchFilterProject"/>
+                <ref bean="searchFilterScienceProgram"/>
 <!--                <ref bean="searchFilterAccessStatus"/>-->
 <!--                <ref bean="searchFilterIsi"/>-->
 <!--                <ref bean="searchFilterAgrovocKeywords"/>-->
@@ -540,6 +543,7 @@
                 <ref bean="searchFilterActionArea"/>
                 <ref bean="searchFilterImpactArea"/>
                 <ref bean="searchFilterProject"/>
+                <ref bean="searchFilterScienceProgram"/>
                 <ref bean="searchFilterAccessStatus"/>
                 <ref bean="searchFilterIsi"/>
                 <ref bean="searchFilterAgrovocKeywords"/>
@@ -2567,17 +2571,6 @@
         <property name="sortOrderSidebar" value="COUNT"/>
     </bean>
 
-    <bean id="searchFilterScienceProgram" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
-        <property name="indexFieldName" value="scienceprogram"/>
-        <property name="metadataFields">
-            <list>
-                <value>cg.contributor.programAccelerator</value>
-            </list>
-        </property>
-        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
-        <property name="sortOrderSidebar" value="COUNT"/>
-    </bean>
-
     <bean id="searchFilterActionArea" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="action_area"/>
         <property name="metadataFields">
@@ -2605,6 +2598,17 @@
         <property name="metadataFields">
             <list>
                 <value>cg.contributor.project</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterScienceProgram" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="scienceprogram"/>
+        <property name="metadataFields">
+            <list>
+                <value>cg.contributor.programAccelerator</value>
             </list>
         </property>
         <property name="facetLimit" value="#CONFIG_SIDEBAR_DISCOVERY_FACET_LIMIT#"/>
