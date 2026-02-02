@@ -3,7 +3,7 @@
 #
 ARG JDK_VERSION=17
 
-FROM openjdk:${JDK_VERSION}-bullseye AS build
+FROM tomcat:9-jdk${JDK_VERSION}
 LABEL maintainer="Mohammad Salem <mohammad.salem@codeobia.com>"
 
 ENV CONFIG_DSPACE_ACTIVE_THEME=MELSpace
@@ -13,12 +13,31 @@ ENV DSPACE_HOME=/dspace
 ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 ENV MAVEN_FLAGS="-Denforcer.skip=true -Dcheckstyle.skip=true -Dlicense.skip=true -Dxml.skip=true -Pdspace-rest"
 
-ENV MAVEN_VERSION=3.9.7
+ENV MAVEN_VERSION=3.9.12
 
 # Use ant from a tarball so we don't have to install it from apt with Java 11
 ENV ANT_VERSION=1.10.13
 ENV ANT_HOME=/tmp/ant-$ANT_VERSION
 ENV PATH=$ANT_HOME/bin:$PATH
+
+# Install OpenJDK
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    wget \
+    tar \
+    vim \
+    postgresql-client \
+    imagemagick \
+    ghostscript \
+    cron \
+    less \
+    vim \
+    geoipupdate \
+    schedtool \
+    xz-utils \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get -y autoremove
+
 # Install Maven and ant
 RUN wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
     && tar -xvf apache-maven-${MAVEN_VERSION}-bin.tar.gz \
@@ -64,12 +83,6 @@ COPY --chown=dspace:dspace custom_configuration/themes/$CONFIG_DSPACE_ACTIVE_THE
 # Change back to root user for cleanup
 USER root
 
-# Cleanup build deps
-RUN rm -rf /var/lib/apt/lists/* \
-    && apt-get -y autoremove \
-    && rm -rf "$DSPACE_HOME/.m2" /tmp/*
-
-FROM tomcat:9-jdk${JDK_VERSION}
 # Give java extra memory (2GB)
 ENV JAVA_OPTS=-Xmx2024m
 # Set some variables for the Tomcat container. Some were already set above in
@@ -79,16 +92,8 @@ ENV DSPACE_HOME=/dspace \
 # Make sure to set PATH *after* setting $VIRTUAL_ENV or else it won't exist yet!
 ENV PATH="$CATALINA_HOME/bin":"$DSPACE_HOME"/bin:$PATH
 
-# Add DSpace user to this container *without* creating the home directory
-# because we will copy it from the build container
-RUN useradd -r -s /bin/bash -M -d "$DSPACE_HOME" dspace
-
 # Remove default Tomcat webapps
 RUN rm -rf "$CATALINA_HOME/webapps"
-
-# Copy the $DSPACE_HOME (/dspace) directory from the build container to
-# the Tomcat runtime container.
-COPY --chown=dspace:dspace --from=build "$DSPACE_HOME" "$DSPACE_HOME"
 
 # Add webapps Tomcat's webapps directory.
 RUN mv -f "$DSPACE_HOME/webapps" "$CATALINA_HOME/" \
@@ -105,29 +110,10 @@ RUN sed -i "s#DSPACE=/dspace#DSPACE=$DSPACE_HOME#g" /etc/cron.d/dspace-maintenan
     && rm -rf /tmp/* \
     && chmod 644 /etc/cron.d/dspace-maintenance-tasks
 
-# Install runtime dependencies
-RUN apt-get update \
-    && apt-get install -y \
-    postgresql-client \
-    imagemagick \
-    ghostscript \
-    cron \
-    less \
-    vim \
-    geoipupdate \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get -y autoremove
-
 WORKDIR "$DSPACE_HOME"
 
 COPY custom_configuration/config/GeoIP.conf /etc/GeoIP.conf
 
-RUN apt-get update \
-    && apt-get install -y \
-    schedtool \
-    xz-utils \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get -y autoremove
 # Change to dspace user for for adding cron jobs
 USER dspace
 
@@ -155,6 +141,11 @@ RUN echo "Debian GNU/Linux `cat /etc/debian_version` image. (`uname -rsv`)" >> /
     && echo "- with DSpace $DSPACE_VERSION on Tomcat $TOMCAT_VERSION"  >> /root/.built \
     && echo "\nNote: if you need to run commands interacting with DSpace you should enter the" >> /root/.built \
     && echo "container as the dspace user, ie: docker exec -it -u dspace dspace /bin/bash" >> /root/.built
+
+# Cleanup build deps
+RUN rm -rf /var/lib/apt/lists/* \
+    && apt-get -y autoremove \
+    && rm -rf "$DSPACE_HOME/.m2" /tmp/*
 
 # Ensure that the database is ready BEFORE starting tomcat
 # 1. While a TCP connection to dspacedb port 5432 is not available, continue to sleep

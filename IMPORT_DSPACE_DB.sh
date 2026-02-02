@@ -32,7 +32,7 @@ else
 fi
 
 echo "$(tput setaf 6)Stopping dspace container...$(tput sgr 0)"
-docker stop dspace7
+docker stop dspace
 
 echo "$(tput setaf 6)Dropping database...$(tput sgr 0)"
 docker exec dspacedb dropdb -U postgres dspace
@@ -56,7 +56,7 @@ echo "$(tput setaf 6)Vacuum database...$(tput sgr 0)"
 docker exec dspacedb vacuumdb -U postgres dspace
 
 echo "$(tput setaf 6)Updating sequences...$(tput sgr 0)"
-docker cp ../dspace-api/src/main/resources/org/dspace/storage/rdbms/sqlmigration/postgres/update-sequences.sql dspacedb:/
+docker cp ../../dspace-api/src/main/resources/org/dspace/storage/rdbms/sqlmigration/postgres/update-sequences.sql dspacedb:/
 docker exec dspacedb psql -U dspace -f /update-sequences.sql dspace
 
 echo "$(tput setaf 6)Removing dspace user...$(tput sgr 0)"
@@ -68,6 +68,6 @@ docker exec -it dspacedb bash -c "rm update-sequences.sql"
 rm dspace-"$num".dump
 
 echo "$(tput setaf 6)Starting dspace container...$(tput sgr 0)"
-docker start dspace7
+docker start dspace
 
 echo "$(tput setaf 6)Finish$(tput sgr 0)"
