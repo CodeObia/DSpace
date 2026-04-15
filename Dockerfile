@@ -13,7 +13,7 @@ ENV DSPACE_HOME=/dspace
 ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 ENV MAVEN_FLAGS="-Denforcer.skip=true -Dcheckstyle.skip=true -Dlicense.skip=true -Dxml.skip=true -Pdspace-rest"
 
-ENV MAVEN_VERSION=3.9.12
+ENV MAVEN_VERSION=3.9.14
 
 # Use ant from a tarball so we don't have to install it from apt with Java 11
 ENV ANT_VERSION=1.10.13
